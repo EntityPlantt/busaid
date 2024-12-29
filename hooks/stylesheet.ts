@@ -82,9 +82,19 @@ export function useStyles() {
 		dropdownContainer: {
 			backgroundColor: theme.colors.card
 		},
-		dropdownSelectedContainer: {
-			backgroundColor: theme.colors.card,
-			filter: "sepia(1)"
+		speedKey: {
+			fontSize: 50,
+			height: 70,
+			color: c.text
+		},
+		speedCell: {
+			height: 75,
+			flex: 1,
+			justifyContent: "center",
+			alignItems: "center"
+		},
+		speedRow: {
+			height: 75
 		}
 	});
 }
