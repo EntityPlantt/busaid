@@ -15,7 +15,7 @@ export function useStyles() {
 	return StyleSheet.create({
 		view: {
 			color: c.text,
-			paddingTop: 100
+			paddingTop: 75
 		},
 		text: {
 			color: c.text,

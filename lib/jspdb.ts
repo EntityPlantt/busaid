@@ -42,6 +42,12 @@ namespace db {
 		type: string;
 		carrier: string;
 	};
+	export interface StopLine {
+		stopId: number;
+		lineId: number;
+		routeId: number;
+		remainingTime: number[];
+	};
 
 	const rest = axios.create({
 		baseURL: "http://info.skopska.mk:8080/",
@@ -90,6 +96,11 @@ namespace db {
 			data.lines[x.id] = x;
 		});
 		await FileSystem.writeAsStringAsync(cachefile, JSON.stringify(data), { encoding: "utf8" });
+	}
+	export async function getStopLines(stopId: number) {
+		let req = { headers: { "eurogps.eu.sid": data.token } };
+        let resp = await rest.get("/rest-its/scheme/stop-lines/" + stopId, req);
+        return resp.data as StopLine[];
 	}
 };
 export default db;

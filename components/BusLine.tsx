@@ -4,7 +4,7 @@ import useJSPDBLoaded from "@/hooks/useJSPDBLoaded";
 import { useStyles } from "@/hooks/stylesheet";
 import { router } from "expo-router";
 
-export default function BusLine({ id, arrivalTime }: { id: number, arrivalTime?: string }) {
+export default function BusLine({ id }: { id: number }) {
 	let loaded = useJSPDBLoaded();
 	const styles = useStyles();
 	if (!loaded) return null;
@@ -16,8 +16,8 @@ export default function BusLine({ id, arrivalTime }: { id: number, arrivalTime?:
 		<View style={styles.itemData}>
 			<Text style={styles.itemText}>{line.name}</Text>
 		</View>
-		<View style={styles.itemEnd}>
+		{/* <View style={styles.itemEnd}>
 			<Text style={styles.itemText}>{arrivalTime}</Text>
-		</View>
+		</View> */}
 	</TouchableOpacity>;
 }
