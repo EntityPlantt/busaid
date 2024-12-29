@@ -59,9 +59,9 @@ namespace db {
 	export const data = {
 		timestamp: Date.now(),
 		token: "",
-		stops: [] as Stop[],
-		routes: [] as Route[],
-		lines: [] as Line[]
+		stops: {} as { [id: string]: Stop },
+		routes: {} as { [id: string]: Route },
+		lines: {} as { [id: string]: Line }
 	};
 
 	export async function init() {
@@ -78,11 +78,17 @@ namespace db {
 		console.log("Token:", data.token);
 		let req = { headers: { "eurogps.eu.sid": data.token } };
 		resp = await rest.get("/rest-its/scheme/stops?filter=true", req);
-		data.stops = resp.data;
+		resp.data.forEach((x: Stop) => {
+			data.stops[x.id] = x;
+		});
 		resp = await rest.get("/rest-its/scheme/routes", req);
-		data.routes = resp.data;
+		resp.data.forEach((x: Route) => {
+			data.routes[x.id] = x;
+		});
 		resp = await rest.get("/rest-its/scheme/lines", req);
-		data.lines = resp.data;
+		resp.data.forEach((x: Line) => {
+			data.lines[x.id] = x;
+		});
 		await FileSystem.writeAsStringAsync(cachefile, JSON.stringify(data), { encoding: "utf8" });
 	}
 };

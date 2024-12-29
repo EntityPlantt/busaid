@@ -1,4 +1,4 @@
-import useJSPDBLoaded from "@/hooks/jspdb";
+import useJSPDBLoaded from "@/hooks/useJSPDBLoaded";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";

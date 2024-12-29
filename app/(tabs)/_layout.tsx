@@ -1,4 +1,4 @@
-import { colors } from "@/constants/StyleSheet";
+import { useColors } from "@/hooks/stylesheet";
 import { FontAwesome } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
@@ -10,8 +10,8 @@ function tab(title: string, icon: React.ComponentProps<typeof FontAwesome>["name
 	}} />;
 }
 export default function RootLayout() {
-	return <Tabs screenOptions={{ tabBarActiveTintColor: colors.accent, headerShown: false }}>
-		{tab("Дома", "home", "index")}
+	return <Tabs screenOptions={{ tabBarActiveTintColor: useColors().accent, headerShown: false }}>
+		{tab("Планер", "map", "index")}
 		{tab("Брза проверка", "clock-o", "speedcheck")}
 		{tab("Подесувања", "cog", "settings")}
 	</Tabs>;
