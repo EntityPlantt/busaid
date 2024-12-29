@@ -1,6 +1,31 @@
-import { DarkTheme, DefaultTheme } from "@react-navigation/native";
-import { useColorScheme } from "react-native";
+import type { Theme } from "@react-navigation/native";
+import { fonts } from "@react-navigation/native/src/theming/fonts";
+import useThemeType from "./useThemeType";
+
+export const DarkTheme: Theme = {
+	dark: true,
+	fonts,
+	colors: {
+		text: "#ffffff",
+		background: "#121212",
+		primary: "#00c418",
+		border: "#272729",
+		card: "#242424",
+		notification: "#00c418"
+	}
+}, DefaultTheme: Theme = {
+	dark: false,
+	fonts,
+	colors: {
+		text: "#212121",
+		background: "#ffffff",
+        primary: "#00c418",
+        border: "#cccccc",
+        card: "#f5f5f5",
+        notification: "#00c418"
+	}
+};
 
 export default function useTheme() {
-	return useColorScheme() == "dark" ? DarkTheme : DefaultTheme;
+	return useThemeType().theme == "dark" ? DarkTheme : DefaultTheme;
 }

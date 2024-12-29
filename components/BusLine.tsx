@@ -1,11 +1,11 @@
 import db from "@/lib/jspdb";
 import { View, Text, TouchableOpacity } from "react-native";
-import useJSPDBLoaded from "@/hooks/useJSPDBLoaded";
+import useLoaded from "@/hooks/useLoaded";
 import { useStyles } from "@/hooks/stylesheet";
 import { router } from "expo-router";
 
 export default function BusLine({ id }: { id: number }) {
-	let loaded = useJSPDBLoaded();
+	let loaded = useLoaded();
 	const styles = useStyles();
 	if (!loaded) return null;
 	let line = db.data.lines[id];

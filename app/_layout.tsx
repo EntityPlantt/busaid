@@ -1,13 +1,13 @@
-import useJSPDBLoaded from "@/hooks/useJSPDBLoaded";
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import useLoaded from "@/hooks/useLoaded";
+import useTheme from "@/hooks/useTheme";
+import { ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useColorScheme } from "react-native";
 
 export default function RootLayout() {
-	let scheme = useColorScheme();
-	if (!useJSPDBLoaded()) return null;
-	return <ThemeProvider value={scheme == "dark" ? DarkTheme : DefaultTheme}>
+	let theme = useTheme();
+	if (!useLoaded()) return null;
+	return <ThemeProvider value={theme}>
 		<Stack screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="(tabs)" />
 		</Stack>

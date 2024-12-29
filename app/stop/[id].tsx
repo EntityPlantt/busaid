@@ -1,5 +1,5 @@
 import BackButton from "@/components/BackButton";
-import BusRouteArrival from "@/components/BusRouteArrival";
+import BusRoute from "@/components/BusRoute";
 import { useStyles } from "@/hooks/stylesheet";
 import db from "@/lib/jspdb";
 import { useLocalSearchParams } from "expo-router";
@@ -31,13 +31,15 @@ export default function Stop() {
 	useEffect(() => {
 		refresh();
 	}, [id]);
-	return <SafeAreaView style={styles.view}>
-		<BackButton />
-		<ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
+	return <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
+		<SafeAreaView style={styles.view}>
+			<BackButton />
 			<Text style={styles.heading}><Text style={styles.muted}>{stop.number}</Text> {stop.name}</Text>
 			<Text style={styles.text}><Text style={styles.muted}>{stop.lat}, {stop.lon}</Text></Text>
-			{stop.note && <Text style={styles.text}>{stop.note}</Text>}
-			{stopLines.map(sl => <BusRouteArrival id={sl.routeId} arrival={sl.arrival} key={sl.routeId + " " + sl.arrival} />)}
-		</ScrollView>
-	</SafeAreaView>;
+			{refreshing ? <Text style={styles.heading}>Лоадирање...</Text> : [
+				stop.note && <Text style={styles.text}>{stop.note}</Text>,
+				stopLines.slice(0, 20).map(sl => <BusRoute id={sl.routeId} arrival={sl.arrival} key={sl.routeId + " " + sl.arrival} />)
+			]}
+		</SafeAreaView>
+	</ScrollView>;
 }

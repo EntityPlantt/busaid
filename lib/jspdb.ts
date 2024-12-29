@@ -69,15 +69,8 @@ namespace db {
 		routes: {} as { [id: string]: Route },
 		lines: {} as { [id: string]: Line }
 	};
-
-	export async function init() {
-		if ((await FileSystem.getInfoAsync(cachefile)).exists) {
-			if (JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })).timestamp + MAX_AGE > Date.now()) {
-				console.log("Using cached data");
-				Object.assign(data, JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })));
-				return;
-			}
-		}
+	
+	export async function fetchData() {
 		console.log("Fetching data from API");
 		let resp = await rest.post("/rest-auth/guests?aid=3136", { headers: { "Content-Type": "application/json" }, data: "{}" });
 		data.token = resp.data;
@@ -95,7 +88,19 @@ namespace db {
 		resp.data.forEach((x: Line) => {
 			data.lines[x.id] = x;
 		});
+		data.timestamp = Date.now();
 		await FileSystem.writeAsStringAsync(cachefile, JSON.stringify(data), { encoding: "utf8" });
+		console.log("Data fetched successfully");
+	}
+	export async function init() {
+		if ((await FileSystem.getInfoAsync(cachefile)).exists) {
+			if (JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })).timestamp + MAX_AGE > Date.now()) {
+				console.log("Using cached data");
+				Object.assign(data, JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })));
+				return;
+			}
+		}
+		await fetchData();
 	}
 	export async function getStopLines(stopId: number) {
 		let req = { headers: { "eurogps.eu.sid": data.token } };

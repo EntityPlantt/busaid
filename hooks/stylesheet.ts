@@ -5,17 +5,18 @@ export function useColors() {
 	let theme = useTheme();
 	return {
 		text: theme.colors.text,
-		accent: "#00c418",
-		bg2: "#00c41840",
-		muted: "#808080"
+		accent: theme.colors.primary,
+		bg2: theme.colors.primary + "40",
+		muted: "#808080",
+		border: theme.colors.border
 	};
 };
 export function useStyles() {
 	let c = useColors();
+	let theme = useTheme();
 	return StyleSheet.create({
 		view: {
-			color: c.text,
-			paddingTop: 75
+			paddingVertical: 75
 		},
 		text: {
 			color: c.text,
@@ -44,17 +45,21 @@ export function useStyles() {
 			padding: 10,
 			borderRadius: 10,
 			height: 50,
-			flexShrink: 0
+			flexShrink: 0,
+			width: 75
 		},
 		itemNoText: {
 			fontSize: 30,
 			color: c.text,
+			textAlign: "center"
 		},
 		itemData: {
-			paddingLeft: 20
+			paddingHorizontal: 20,
+			flexShrink: 1,
 		},
 		itemEnd: {
-			marginLeft: "auto"
+			marginLeft: "auto",
+			flexShrink: 0
 		},
 		itemText: {
 			color: c.text,
@@ -62,6 +67,24 @@ export function useStyles() {
 		},
 		muted: {
 			color: c.muted
+		},
+		dropdown: {
+			color: c.text,
+			borderColor: c.border,
+			borderWidth: 1,
+			borderRadius: 5,
+			marginHorizontal: 10,
+			padding: 15,
+		},
+		dropdownText: {
+			color: c.text
+		},
+		dropdownContainer: {
+			backgroundColor: theme.colors.card
+		},
+		dropdownSelectedContainer: {
+			backgroundColor: theme.colors.card,
+			filter: "sepia(1)"
 		}
 	});
 }

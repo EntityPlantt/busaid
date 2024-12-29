@@ -13,6 +13,7 @@ export default function RootLayout() {
 	return <Tabs screenOptions={{ tabBarActiveTintColor: useColors().accent, headerShown: false }}>
 		{tab("Планер", "map", "index")}
 		{tab("Брза проверка", "clock-o", "speedcheck")}
+		{tab("Станици", "stop-circle", "stops")}
 		{tab("Подесувања", "cog", "settings")}
 	</Tabs>;
 }
