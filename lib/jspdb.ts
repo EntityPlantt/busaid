@@ -59,7 +59,7 @@ namespace db {
 			Origin: "http://info.skopska.mk",
 			Host: "info.skopska.mk:8080",
 			Connection: "keep-alive",
-			"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0"
+			"User-Agent": "Mozilla/5.0 (BusAid; Android x86_64; rv:1.0) BusAid/1.0; io.github.entityplantt.busaid"
 		}
 	});
 	export const data = {
@@ -99,7 +99,6 @@ namespace db {
 	export async function init() {
 		if ((await FileSystem.getInfoAsync(cachefile)).exists) {
 			if (JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })).timestamp + MAX_AGE > Date.now()) {
-				console.log("Using cached data");
 				Object.assign(data, JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })));
 				return;
 			}

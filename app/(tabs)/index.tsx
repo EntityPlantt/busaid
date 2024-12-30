@@ -10,7 +10,6 @@ export default function Index() {
 	let loaded = useLoaded();
 	const styles = useStyles();
 	const colors = useColors();
-	if (!loaded) return null;
 	return <SafeAreaView style={styles.view}>
 		<Text style={styles.heading}>Планер</Text>
 		<TouchableOpacity style={{
@@ -25,7 +24,7 @@ export default function Index() {
 			<Text style={styles.text}>Дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
-		<ScrollView style={{ maxHeight: 500 }}>{userdata.destinations.map(x => <BusStop id={x} />)}</ScrollView>
+		<ScrollView style={{ maxHeight: 500 }}>{(loaded ? userdata.destinations : []).map(x => <BusStop id={x} />)}</ScrollView>
 		<TouchableOpacity style={{
 			display: "flex",
 			flexDirection: "row",
@@ -38,6 +37,6 @@ export default function Index() {
 			<Text style={styles.text}>Меѓу-дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
-		<ScrollView style={{ maxHeight: 500 }}>{userdata.interdestinations.map(x => <BusStop id={x} />)}</ScrollView>
+		<ScrollView style={{ maxHeight: 500 }}>{(loaded ? userdata.interdestinations : []).map(x => <BusStop id={x} />)}</ScrollView>
 	</SafeAreaView>;
 }

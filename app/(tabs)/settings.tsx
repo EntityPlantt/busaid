@@ -3,7 +3,7 @@ import useThemeType from "@/hooks/useThemeType";
 import db from "@/lib/jspdb";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
-import { SafeAreaView, Text, StyleSheet, Button } from "react-native";
+import { SafeAreaView, Text, Button } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 const themeOptions = [

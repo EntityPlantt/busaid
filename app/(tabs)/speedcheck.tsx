@@ -6,14 +6,13 @@ import { useState } from "react";
 import { Dimensions, SafeAreaView, Text } from "react-native";
 import { DataTable } from "react-native-paper";
 
-export default function SpeedDial() {
+export default function SpeedCheck() {
 	const loaded = useLoaded();
 	const styles = useStyles(), [typed, setTyped] = useState("");
-	if (!loaded) return null;
 	function click(key: string) {
 		console.log(`Clicked on ${key}`);
 		if (key == "#") {
-			console.log(Object.values(db.data.lines).map(x => x.number));
+			if (!loaded) return;
 			let line = Object.values(db.data.lines).find(l => l.number.toUpperCase().replaceAll(/[ ПН]/g, "") == typed);
 			if (line) router.push(`/line/${line.id}`);
 			else;
