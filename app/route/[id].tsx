@@ -3,7 +3,7 @@ import BusStop from "@/components/BusStop";
 import { useStyles } from "@/hooks/stylesheet";
 import db from "@/lib/jspdb";
 import { useLocalSearchParams } from "expo-router";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { FlatList, SafeAreaView, Text, View } from "react-native";
 
 export default function Route() {
 	let id = parseInt(useLocalSearchParams().id as string);
@@ -17,6 +17,6 @@ export default function Route() {
 		<BackButton />
 		<Text style={styles.heading}>{route.name}</Text>
 		<Text style={styles.text}>{line.name}</Text>
-		<ScrollView>{route.stopIds.map(s => <BusStop id={s} key={s} />)}</ScrollView>
+		<FlatList data={route.stopIds} renderItem={({ item }) => <BusStop id={item} />} keyExtractor={String} />
 	</SafeAreaView>;
 }
