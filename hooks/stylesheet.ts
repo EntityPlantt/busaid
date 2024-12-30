@@ -8,7 +8,8 @@ export function useColors() {
 		accent: theme.colors.primary,
 		bg2: theme.colors.primary + "40",
 		muted: "#808080",
-		border: theme.colors.border
+		border: theme.colors.border,
+		blue: "#0040ff"
 	};
 };
 export function useStyles() {
@@ -95,6 +96,25 @@ export function useStyles() {
 		},
 		speedRow: {
 			height: 75
+		},
+		back: {
+			position: "absolute",
+			left: 10,
+			top: 30,
+			width: 50,
+			height: 50
+		},
+		topBtnIcon: {
+			position: "relative",
+			top: 10,
+			left: 10
+		},
+		stopStar: {
+			position: "absolute",
+			right: 10,
+			top: 30,
+			width: 50,
+			height: 50
 		}
 	});
 }

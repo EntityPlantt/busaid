@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function useLoaded() {
 	let [loaded, setloaded] = useState(false);
 	useEffect(() => {
-		Promise.all([db.init(), userdata.load()]).then(() => setloaded(true));
+		db.init().then(() => setloaded(true));
 	}, []);
 	return loaded;
 }

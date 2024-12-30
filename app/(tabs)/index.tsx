@@ -1,4 +1,4 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Text, TouchableOpacity } from "react-native";
 import { useColors, useStyles } from "@/hooks/stylesheet";
 import useLoaded from "@/hooks/useLoaded";
 import { FontAwesome } from "@expo/vector-icons";
@@ -25,7 +25,10 @@ export default function Index() {
 			<Text style={styles.text}>Дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
-		<ScrollView style={{ maxHeight: 500 }}>{(loaded ? userdata.destinations : []).map(x => <BusStop id={x} />)}</ScrollView>
+		<FlatList style={{ maxHeight: 500 }}
+			data={loaded ? Array.from(userdata.destinations) : []}
+			renderItem={({ item }) => <BusStop id={item} />}
+			keyExtractor={String} />
 		<TouchableOpacity style={{
 			display: "flex",
 			flexDirection: "row",
@@ -38,6 +41,9 @@ export default function Index() {
 			<Text style={styles.text}>Меѓу-дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
-		<ScrollView style={{ maxHeight: 500 }}>{(loaded ? userdata.interdestinations : []).map(x => <BusStop id={x} />)}</ScrollView>
+		<FlatList style={{ maxHeight: 500 }}
+			data={loaded ? Array.from(userdata.interdestinations) : []}
+			renderItem={({ item }) => <BusStop id={item} />}
+			keyExtractor={String} />
 	</SafeAreaView>;
 }
