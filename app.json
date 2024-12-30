@@ -34,7 +34,6 @@
           "backgroundColor": "#000000"
         }
       ],
-      "axios",
       "expo-file-system"
     ],
     "experiments": {

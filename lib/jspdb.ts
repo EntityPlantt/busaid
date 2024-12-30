@@ -72,29 +72,29 @@ namespace db {
 
 	export async function fetchData(dataFetchLogSetter?: React.Dispatch<React.SetStateAction<string>>) {
 		if (!dataFetchLogSetter) dataFetchLogSetter = () => { };
-		dataFetchLogSetter("Fetching data from API");
+		dataFetchLogSetter("Преземање на податоци од Скопска");
 		let resp = await rest.post("/rest-auth/guests?aid=3136", { headers: { "Content-Type": "application/json" }, data: "{}" });
 		data.token = resp.data;
-		dataFetchLogSetter("Token: " + data.token);
+		dataFetchLogSetter("Жетон: " + data.token);
 		let req = { headers: { "eurogps.eu.sid": data.token } };
 		resp = await rest.get("/rest-its/scheme/stops?filter=true", req);
 		resp.data.forEach((x: Stop) => {
 			data.stops[x.id] = x;
 		});
-		dataFetchLogSetter("Fetched stops");
+		dataFetchLogSetter("Преземени станици");
 		resp = await rest.get("/rest-its/scheme/routes", req);
 		resp.data.forEach((x: Route) => {
 			data.routes[x.id] = x;
 		});
-		dataFetchLogSetter("Fetched routes");
+		dataFetchLogSetter("Преземени рути");
 		resp = await rest.get("/rest-its/scheme/lines", req);
 		resp.data.forEach((x: Line) => {
 			data.lines[x.id] = x;
 		});
-		dataFetchLogSetter("Fetched lines");
+		dataFetchLogSetter("Преземени линии");
 		data.timestamp = Date.now();
 		await FileSystem.writeAsStringAsync(cachefile, JSON.stringify(data), { encoding: "utf8" });
-		dataFetchLogSetter("Data fetched successfully");
+		dataFetchLogSetter("Освежено");
 	}
 	export async function init() {
 		if ((await FileSystem.getInfoAsync(cachefile)).exists) {
