@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import userdata from "@/lib/userdata";
 import { useEffect, useState } from "react";
 import { cacheDirectory, readAsStringAsync } from "expo-file-system";
+import { router } from "expo-router";
 
 export default function Index() {
 	let loaded = useLoaded();
@@ -26,7 +27,7 @@ export default function Index() {
 			borderTopColor: colors.border,
 			borderTopWidth: 1,
 			marginTop: 20
-		}}>
+		}} onPress={() => router.push("/stops")}>
 			<Text style={styles.text}>Дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
@@ -39,7 +40,7 @@ export default function Index() {
 			borderTopColor: colors.border,
 			borderTopWidth: 1,
 			marginTop: 20
-		}}>
+		}} onPress={() => router.push("/stops")}>
 			<Text style={styles.text}>Меѓу-дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
