@@ -14,7 +14,10 @@ const themeOptions = [
 
 export default function Settings() {
 	const styles = useStyles(), colors = useColors();
-	let themeType = useThemeType(), [lastFetch, setLastFetch] = useState(db.data.timestamp), [fetching, setFetching] = useState(false);
+	let themeType = useThemeType(),
+		[lastFetch, setLastFetch] = useState(db.data.timestamp),
+		[fetching, setFetching] = useState(false),
+		[fetchingLog, setFetchingLog] = useState("");
 	function themeChange(item: { label: string, value: string }) {
 		themeType.updateTheme(item.value || null);
 	}
@@ -36,9 +39,9 @@ export default function Settings() {
 			}} />} />
 		<Text style={[styles.text, { marginTop: 15 }]}>Освежување на датабазата на автобуски станици, линии и рути</Text>
 		<Text style={[styles.text, styles.muted, { marginBottom: 15 }]}>Последно освежено: {new Date(lastFetch).toLocaleString("mk")}</Text>
-		<Button title="Освежи" color={colors.accent} disabled={fetching} onPress={() => {
+		<Button title={fetchingLog ?? "Освежи"} color={colors.accent} disabled={fetching} onPress={() => {
 			setFetching(true);
-			db.fetchData().then(() => {
+			db.fetchData(setFetchingLog).then(() => {
 				setLastFetch(db.data.timestamp);
 				setFetching(false);
 			});

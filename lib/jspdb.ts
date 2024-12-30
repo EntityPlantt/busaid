@@ -69,28 +69,32 @@ namespace db {
 		routes: {} as { [id: string]: Route },
 		lines: {} as { [id: string]: Line }
 	};
-	
-	export async function fetchData() {
-		console.log("Fetching data from API");
+
+	export async function fetchData(dataFetchLogSetter?: React.Dispatch<React.SetStateAction<string>>) {
+		if (!dataFetchLogSetter) dataFetchLogSetter = () => { };
+		dataFetchLogSetter("Fetching data from API");
 		let resp = await rest.post("/rest-auth/guests?aid=3136", { headers: { "Content-Type": "application/json" }, data: "{}" });
 		data.token = resp.data;
-		console.log("Token:", data.token);
+		dataFetchLogSetter("Token: " + data.token);
 		let req = { headers: { "eurogps.eu.sid": data.token } };
 		resp = await rest.get("/rest-its/scheme/stops?filter=true", req);
 		resp.data.forEach((x: Stop) => {
 			data.stops[x.id] = x;
 		});
+		dataFetchLogSetter("Fetched stops");
 		resp = await rest.get("/rest-its/scheme/routes", req);
 		resp.data.forEach((x: Route) => {
 			data.routes[x.id] = x;
 		});
+		dataFetchLogSetter("Fetched routes");
 		resp = await rest.get("/rest-its/scheme/lines", req);
 		resp.data.forEach((x: Line) => {
 			data.lines[x.id] = x;
 		});
+		dataFetchLogSetter("Fetched lines");
 		data.timestamp = Date.now();
 		await FileSystem.writeAsStringAsync(cachefile, JSON.stringify(data), { encoding: "utf8" });
-		console.log("Data fetched successfully");
+		dataFetchLogSetter("Data fetched successfully");
 	}
 	export async function init() {
 		if ((await FileSystem.getInfoAsync(cachefile)).exists) {
@@ -100,12 +104,12 @@ namespace db {
 				return;
 			}
 		}
-		await fetchData();
+		await fetchData(() => { });
 	}
 	export async function getStopLines(stopId: number) {
 		let req = { headers: { "eurogps.eu.sid": data.token } };
-        let resp = await rest.get("/rest-its/scheme/stop-lines/" + stopId, req);
-        return resp.data as StopLine[];
+		let resp = await rest.get("/rest-its/scheme/stop-lines/" + stopId, req);
+		return resp.data as StopLine[];
 	}
 };
 export default db;
