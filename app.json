@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "busaid",
+    "name": "Bus Aid",
     "slug": "busaid",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,13 +9,14 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#00620c"
+      },
+      "package": "io.github.entityplantt.busaid"
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +38,14 @@
     "experiments": {
       "typedRoutes": true
     },
-    "backgroundColor": "#000000"
+    "backgroundColor": "#000000",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "39872456-3c01-4de7-a3b2-337c56379fce"
+      }
+    }
   }
 }
