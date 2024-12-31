@@ -2,18 +2,19 @@ import BackButton from "@/components/BackButton";
 import BusRoute from "@/components/BusRoute";
 import { useColors, useStyles } from "@/hooks/stylesheet";
 import db from "@/lib/jspdb";
-import userdata from "@/lib/userdata";
+import { setUserData, useUserData } from "@/lib/userdata";
 import { FontAwesome } from "@expo/vector-icons";
 import { impactAsync } from "expo-haptics";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FlatList, RefreshControl, SafeAreaView, Text, TouchableOpacity } from "react-native";
 
 export default function Stop() {
-	let id = parseInt(useLocalSearchParams().id as string);
-	let stop = db.data.stops[id];
-	let [refreshing, setRefreshing] = useState(false);
-	let [star, setStar] = useState(0);
+	const id = parseInt(useLocalSearchParams().id as string);
+	const stop = db.data.stops[id];
+	const userdata = useUserData();
+	const [refreshing, setRefreshing] = useState(false);
+	const [star, setStar] = useState(0);
 	const styles = useStyles(), colors = useColors();
 	const [stopLines, setStopLines] = useState([] as {
 		routeId: number;
@@ -36,10 +37,7 @@ export default function Stop() {
 	}
 	useEffect(() => {
 		refresh();
-		userdata.load().then(() => {
-			console.log("setstar");
-			setStar(userdata.destinations.has(id) ? 1 : (userdata.interdestinations.has(id) ? 2 : 0));
-		});
+		setStar(userdata.destinations.has(id) ? 1 : (userdata.interdestinations.has(id) ? 2 : 0));
 	}, []);
 	console.log(userdata.destinations, userdata.interdestinations, star);
 	async function starClick() {
@@ -47,18 +45,18 @@ export default function Stop() {
 		if (star == 1) userdata.destinations.delete(id);
 		if (star == 2) userdata.interdestinations.delete(id);
 		if (star == 0) userdata.destinations.add(id);
-		setStar(star > 0 ? 0 : 1);
-		await userdata.save();
 		await impactAsync();
+		setUserData(userdata);
+		setStar(star ? 0 : 1);
 	}
 	async function starLongPress() {
 		console.log("Star long press", id);
 		if (star == 2) return;
 		if (star == 1) userdata.destinations.delete(id);
 		userdata.interdestinations.add(id);
-		setStar(2);
-		await userdata.save();
 		await impactAsync();
+		setUserData(userdata);
+		setStar(2);
 	}
 	return <SafeAreaView style={styles.view}>
 		<BackButton />

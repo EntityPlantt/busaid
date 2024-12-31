@@ -1,18 +1,22 @@
-import { FlatList, Text, TouchableOpacity } from "react-native";
+import { Button, FlatList, Text, TouchableOpacity } from "react-native";
 import { useColors, useStyles } from "@/hooks/stylesheet";
 import useLoaded from "@/hooks/useLoaded";
 import { FontAwesome } from "@expo/vector-icons";
 import BusStop from "@/components/BusStop";
 import { SafeAreaView } from "react-native-safe-area-context";
-import userdata from "@/lib/userdata";
+import { useUserData } from "@/lib/userdata";
 import { router } from "expo-router";
+import { useEffect, useReducer } from "react";
 
 export default function Index() {
 	let loaded = useLoaded();
 	const styles = useStyles();
 	const colors = useColors();
+	const userdata = useUserData();
+	const refresh = useReducer(x => !x, false)[1];
 	return <SafeAreaView style={styles.view}>
-		<Text style={styles.heading}>Планер</Text>
+		<Text style={[styles.heading, { marginBottom: 20 }]}>Планер</Text>
+		<Button title="Освежи" color={colors.accent} onPress={refresh} />
 		<TouchableOpacity style={{
 			display: "flex",
 			flexDirection: "row",

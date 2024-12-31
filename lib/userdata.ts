@@ -1,31 +1,41 @@
 import * as fs from "expo-file-system";
+import { useEffect, useState } from "react";
+import { singletonHook } from "react-singleton-hook";
 
-namespace userdata {
-	const filename = fs.documentDirectory + "userdata.json", fileopts = { encoding: "utf8" as fs.EncodingType };
+const filename = fs.documentDirectory + "userdata.json", fileopts = { encoding: "utf8" as fs.EncodingType };
 
-	export const destinations = new Set<number>(), interdestinations = new Set<number>();
-
-	export async function load() {
-		if (!(await fs.getInfoAsync(filename)).exists) return;
-		console.log("Loading userdata");
-		let data = JSON.parse(await fs.readAsStringAsync(filename, fileopts));
-		destinations.clear();
-		interdestinations.clear();
-		data.destinations.forEach((x: number) => destinations.add(x));
-		data.interdestinations.forEach((x: number) => interdestinations.add(x));
-		console.log("Loaded userdata");
-	}
-	export async function save() {
-		await fs.writeAsStringAsync(filename, JSON.stringify({
-			destinations: Array.from(destinations),
-			interdestinations: Array.from(interdestinations)
-		}), fileopts);
-	}
-	export function reset() {
-		destinations.clear();
-		interdestinations.clear();
-		fs.deleteAsync(filename);
-	}
+const initUserData = {
+	destinations: new Set<number>(),
+	interdestinations: new Set<number>()
 };
 
-export default userdata;
+let globalSetUD: (x: typeof initUserData) => void = () => { throw new Error("Can't use hook rn"); };
+
+export const useUserData = singletonHook(initUserData, () => {
+	const [userdata, setUserData] = useState(initUserData);
+	globalSetUD = data => {
+		fs.writeAsStringAsync(filename, JSON.stringify({
+			destinations: Array.from(data.destinations),
+			interdestinations: Array.from(data.interdestinations)
+		}), fileopts);
+		console.log("Saved userdata");
+		setUserData(data);
+	};
+	useEffect(() => {
+		(async () => {
+			if (!(await fs.getInfoAsync(filename)).exists) return;
+			console.log("Loading userdata");
+			let d = JSON.parse(await fs.readAsStringAsync(filename, fileopts));
+			userdata.destinations.clear();
+			userdata.interdestinations.clear();
+			d.destinations.forEach((x: number) => userdata.destinations.add(x));
+			d.interdestinations.forEach((x: number) => userdata.interdestinations.add(x));
+			console.log("Loaded userdata", d);
+		})();
+	}, []);
+	return userdata;
+});
+
+export function setUserData(v: typeof initUserData) {
+	globalSetUD(v);
+}
