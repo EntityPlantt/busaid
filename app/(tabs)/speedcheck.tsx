@@ -17,13 +17,10 @@ export default function SpeedCheck() {
 			if (!loaded) return;
 			let line = Object.values(db.data.lines).find(l => l.number.toUpperCase().replaceAll(/[ ПН]/g, "") == typed);
 			if (line) router.push(`/line/${line.id}`);
-			else;
 			return;
 		}
 		if (key == "<") setTyped(typed.slice(0, -1));
-		else {
-			setTyped(typed + key);
-		}
+		else setTyped(typed + key);
 	}
 	const keypad = ["АБВ", "123", "456", "789", "<0#"];
 	return <SafeAreaView style={styles.view}>

@@ -31,7 +31,7 @@ export function useStyles() {
 			textAlign: "center"
 		},
 		item: {
-			marginTop: 20,
+			marginTop: 5,
 			paddingVertical: 10,
 			paddingHorizontal: 20,
 			flex: 1,

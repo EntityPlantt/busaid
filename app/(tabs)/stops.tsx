@@ -18,7 +18,7 @@ export default function Stops() {
 			marginBottom: 20
 		}} />
 		<FlatList
-			data={Object.values(loaded ? db.data.stops : []).filter(x => x.name.toLowerCase().includes(query.toLowerCase())).slice(0, 50)}
+			data={Object.values(loaded ? db.data.stops : []).filter(x => (x.number + " " + x.name).toLowerCase().includes(query.toLowerCase())).slice(0, 50)}
 			renderItem={({ item }) => <BusStop id={item.id} />}
 			keyExtractor={item => item.id.toString()} />
 	</SafeAreaView>;
