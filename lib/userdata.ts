@@ -31,6 +31,7 @@ export const useUserData = singletonHook(initUserData, () => {
 			d.destinations.forEach((x: number) => userdata.destinations.add(x));
 			d.interdestinations.forEach((x: number) => userdata.interdestinations.add(x));
 			console.log("Loaded userdata", d);
+			setUserData(userdata);
 		})();
 	}, []);
 	return userdata;

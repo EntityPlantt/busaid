@@ -6,7 +6,6 @@ export function useColors() {
 	return {
 		text: theme.colors.text,
 		accent: theme.colors.primary,
-		bg2: theme.colors.primary + "40",
 		muted: "#808080",
 		border: theme.colors.border,
 		blue: "#0040ff"
@@ -38,11 +37,11 @@ export function useStyles() {
 			flex: 1,
 			alignItems: "center",
 			flexDirection: "row",
-			backgroundColor: c.bg2,
+			backgroundColor: c.muted + "40",
 			minHeight: 70
 		},
 		itemNo: {
-			backgroundColor: c.bg2,
+			backgroundColor: c.muted + "40",
 			padding: 10,
 			borderRadius: 10,
 			height: 50,

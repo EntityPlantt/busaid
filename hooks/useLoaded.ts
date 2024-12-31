@@ -1,9 +1,8 @@
 import db from "@/lib/jspdb";
-import userdata from "@/lib/userdata";
 import { useEffect, useState } from "react";
 
 export default function useLoaded() {
-	let [loaded, setloaded] = useState(false);
+	const [loaded, setloaded] = useState(false);
 	useEffect(() => {
 		db.init().then(() => setloaded(true));
 	}, []);

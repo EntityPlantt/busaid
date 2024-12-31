@@ -6,7 +6,7 @@ import BusStop from "@/components/BusStop";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useUserData } from "@/lib/userdata";
 import { router } from "expo-router";
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 
 export default function Index() {
 	let loaded = useLoaded();
