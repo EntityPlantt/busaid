@@ -7,6 +7,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useUserData } from "@/lib/userdata";
 import { router } from "expo-router";
 import { useReducer } from "react";
+import { sendHelloNotif } from "@/lib/notifications";
+
+import "@/lib/location";
 
 export default function Index() {
 	let loaded = useLoaded();
@@ -17,6 +20,7 @@ export default function Index() {
 	return <SafeAreaView style={styles.view}>
 		<Text style={[styles.heading, { marginBottom: 20 }]}>Планер</Text>
 		<Button title="Освежи" color={colors.accent} onPress={refresh} />
+		<Button title="Test notif" color={colors.accent} onPress={sendHelloNotif} />
 		<TouchableOpacity style={{
 			display: "flex",
 			flexDirection: "row",
@@ -29,7 +33,7 @@ export default function Index() {
 			<Text style={styles.text}>Дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
-		<FlatList style={{ maxHeight: 500 }}
+		<FlatList style={{ maxHeight: 300 }}
 			data={loaded ? Array.from(userdata.destinations) : []}
 			renderItem={({ item }) => <BusStop id={item} />}
 			keyExtractor={String} />
@@ -45,7 +49,7 @@ export default function Index() {
 			<Text style={styles.text}>Меѓу-дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
-		<FlatList style={{ maxHeight: 500 }}
+		<FlatList style={{ maxHeight: 300 }}
 			data={loaded ? Array.from(userdata.interdestinations) : []}
 			renderItem={({ item }) => <BusStop id={item} />}
 			keyExtractor={String} />

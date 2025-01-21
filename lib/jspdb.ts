@@ -69,6 +69,8 @@ namespace db {
 		routes: {} as { [id: string]: Route },
 		lines: {} as { [id: string]: Line }
 	};
+	export const loadedcb = [] as Function[];
+	var loading = false;
 
 	export async function fetchData(dataFetchLogSetter?: React.Dispatch<React.SetStateAction<string>>) {
 		if (!dataFetchLogSetter) dataFetchLogSetter = () => { };
@@ -97,13 +99,24 @@ namespace db {
 		dataFetchLogSetter("Освежено");
 	}
 	export async function init() {
+		if (loading) {
+			return await new Promise(res => loadedcb.push(res));
+		}
+		if (data.token.length) return;
+		loading = true;
 		if ((await FileSystem.getInfoAsync(cachefile)).exists) {
 			if (JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })).timestamp + MAX_AGE > Date.now()) {
 				Object.assign(data, JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })));
+				loading = false;
+				loadedcb.forEach(x => x());
+				loadedcb.length = 0;
 				return;
 			}
 		}
 		await fetchData(() => { });
+		loading = false;
+		loadedcb.forEach(x => x());
+		loadedcb.length = 0;
 	}
 	export async function getStopLines(stopId: number) {
 		let req = { headers: { "eurogps.eu.sid": data.token } };
