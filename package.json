@@ -1,7 +1,7 @@
 {
   "name": "busaid",
   "main": "expo-router/entry",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -10,8 +10,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "eas-build-dev": "eas build -p android --profile development",
-    "eas-build-pre": "eas build -p android --profile preview"
+    "eas-dev": "eas build -p android --profile development",
+    "eas-pre": "eas build -p android --profile preview"
   },
   "jest": {
     "preset": "jest-expo"

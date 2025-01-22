@@ -21,11 +21,11 @@ Notification.setNotificationChannelAsync("hello", {
 	sound: null
 });
 
-export function sendHelloNotif() {
+export function sendHelloNotif(content: string) {
 	Notification.scheduleNotificationAsync({
 		content: {
 			title: "Hello!",
-			body: "This is a notification!",
+			body: content,
 			color: "#00c418",
 			data: {
 				type: "hello"
@@ -38,3 +38,7 @@ export function sendHelloNotif() {
 		},
 	});
 }
+
+/* export function locationNotif({coords}: LocationData) {
+	Notification.
+} */
