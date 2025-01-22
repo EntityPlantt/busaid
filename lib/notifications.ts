@@ -12,12 +12,23 @@ Notification.setNotificationHandler({
 
 Notification.setNotificationChannelAsync("hello", {
 	name: "Hello",
-	importance: Notification.AndroidImportance.MAX,
-	lightColor: "#00c418",
-	vibrationPattern: [0, 200, 200, 200],
 	description: "Testing channel",
+	importance: Notification.AndroidImportance.MAX,
 	enableLights: true,
+	lightColor: "#00c418",
 	enableVibrate: true,
+	vibrationPattern: [0, 200, 200, 200],
+	sound: null
+});
+
+Notification.setNotificationChannelAsync("destination", {
+	name: "Дестинации",
+	description: "Нотификации што се добиваат во близина на дестинација",
+	importance: Notification.AndroidImportance.MAX,
+	enableLights: true,
+	lightColor: "#00c418",
+	enableVibrate: true,
+	vibrationPattern: [0, 200, 100, 100, 100, 200],
 	sound: null
 });
 

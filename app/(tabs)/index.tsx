@@ -8,7 +8,6 @@ import { useUserData } from "@/lib/userdata";
 import { router } from "expo-router";
 import { useReducer } from "react";
 import { sendHelloNotif } from "@/lib/notifications";
-import useLocation from "@/hooks/useLocation";
 
 export default function Index() {
 	let loaded = useLoaded();
@@ -16,9 +15,7 @@ export default function Index() {
 	const colors = useColors();
 	const userdata = useUserData();
 	const refresh = useReducer(x => !x, false)[1];
-	const location = useLocation();
 	return <SafeAreaView style={styles.view}>
-		<Text style={[styles.text, styles.muted]}>{location.coords.latitude}, {location.coords.longitude}</Text>
 		<Text style={[styles.heading, { marginBottom: 20 }]}>Планер</Text>
 		<Button title="Освежи" color={colors.accent} onPress={refresh} />
 		<Button title="Test notif" color={colors.accent} onPress={sendHelloNotif.bind(null, "helo")} />

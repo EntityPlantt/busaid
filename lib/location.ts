@@ -6,7 +6,7 @@ import { sendHelloNotif } from "./notifications";
 const TASK = "background-location-task";
 
 export const EARTH_RADIUS = 6378137, SKOPJE_ALTITUDE = 240;
-export const location = {} as LocationData, locationListeners: Function[] = [];
+export const location = { coords: {} } as LocationData;
 
 export function radians(degrees: number) {
 	return degrees * Math.PI / 180;
@@ -23,24 +23,22 @@ TaskManager.defineTask(TASK, async ({ data, error }) => {
 		locations: LocationData[]
 	};
 	if (!locations) return;
+	let x = distance(location.coords, locations[0].coords);
 	Object.assign(location, locations.pop());
-	sendHelloNotif(location.coords.latitude + ", LON: " + location.coords.longitude);
-	console.log(location.coords);
-	db.init().then(() => console.log(distance(location.coords, { latitude: db.data.stops[180].lat, longitude: db.data.stops[180].lon })));
-	locationListeners.forEach(x => x());
+	sendHelloNotif("LAT: " + location.coords.latitude + ", LON: " + location.coords.longitude + ", DELTA: " + x);
+	console.log(location.coords, x);
+	// db.init().then(() => console.log(distance(location.coords, { latitude: db.data.stops[180].lat, longitude: db.data.stops[180].lon })));
 });
 
-console.log("Location following setting up");
-
 (async () => {
+	console.log("Location following setting up");
 	const { status: foregroundStatus } = await Location.requestForegroundPermissionsAsync();
 	if (foregroundStatus != "granted") return;
 	const { status: backgroundStatus } = await Location.requestBackgroundPermissionsAsync();
 	if (backgroundStatus != "granted") return;
-	await Location.stopLocationUpdatesAsync(TASK);
 	await Location.startLocationUpdatesAsync(TASK, {
 		accuracy: Location.Accuracy.Highest,
-		timeInterval: 1000,
+		timeInterval: 5000,
 		distanceInterval: 0,
 		foregroundService: {
 			notificationTitle: "Bus Aid ја следи Вашата локација",

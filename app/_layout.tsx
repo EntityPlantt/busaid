@@ -4,6 +4,8 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SingletonHooksContainer } from "react-singleton-hook";
 
+import "@/lib/location";
+
 export default function RootLayout() {
 	let theme = useTheme();
 	return <ThemeProvider value={theme}>
