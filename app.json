@@ -21,7 +21,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#00620c"
       },
-      "package": "io.github.entityplantt.busaid"
+      "package": "io.github.entityplantt.busaid",
+	  "edgeToEdgeEnabled": false
     },
     "web": {
       "bundler": "metro",

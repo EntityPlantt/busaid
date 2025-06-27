@@ -60,7 +60,8 @@ export function useStyles() {
 		},
 		itemEnd: {
 			marginLeft: "auto",
-			flexShrink: 0
+			flexShrink: 0,
+			paddingRight: 10
 		},
 		itemText: {
 			color: c.text,

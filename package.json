@@ -67,7 +67,8 @@
       "reactNativeDirectoryCheck": {
         "exclude": [
           "react-native-element-dropdown"
-        ]
+        ],
+		"listUnknownPackages": false
       }
     }
   }
