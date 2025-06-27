@@ -1,4 +1,4 @@
-import { Button, FlatList, Text, TouchableOpacity } from "react-native";
+import { Button, FlatList, ScrollView, Text, TouchableOpacity } from "react-native";
 import { useColors, useStyles } from "@/hooks/stylesheet";
 import useLoaded from "@/hooks/useLoaded";
 import { FontAwesome } from "@expo/vector-icons";
@@ -17,21 +17,17 @@ export default function Index() {
 	return <SafeAreaView style={styles.view}>
 		<Text style={[styles.heading, { marginBottom: 20 }]}>Планер</Text>
 		<Button title="Освежи" color={colors.accent} onPress={refresh} />
-		<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
-			<Text style={styles.text}>Дестинации</Text>
-			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
-		</TouchableOpacity>
-		<FlatList style={{ maxHeight: 500 }}
-			data={loaded ? Array.from(userdata.destinations) : []}
-			renderItem={({ item }) => <BusStop id={item} />}
-			keyExtractor={String} />
-		<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
-			<Text style={styles.text}>Меѓу-дестинации</Text>
-			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
-		</TouchableOpacity>
-		<FlatList style={{ maxHeight: 500 }}
-			data={loaded ? Array.from(userdata.interdestinations) : []}
-			renderItem={({ item }) => <BusStop id={item} />}
-			keyExtractor={String} />
+		<ScrollView>
+			<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
+				<Text style={styles.text}>Дестинации</Text>
+				<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
+			</TouchableOpacity>
+			{loaded && Array.from(userdata.destinations).map(x => <BusStop id={x} key={x} />)}
+			<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
+				<Text style={styles.text}>Меѓу-дестинации</Text>
+				<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
+			</TouchableOpacity>
+			{loaded && Array.from(userdata.interdestinations).map(x => <BusStop id={x} key={x} />)}
+		</ScrollView>
 	</SafeAreaView>;
 }

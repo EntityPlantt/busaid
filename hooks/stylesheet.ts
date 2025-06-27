@@ -32,10 +32,8 @@ export function useStyles() {
 		},
 		item: {
 			marginTop: 5,
-			marginLeft: 10,
-			marginRight: 10,
-			paddingVertical: 10,
-			paddingHorizontal: 20,
+			marginHorizontal: 10,
+			padding: 5,
 			flex: 1,
 			alignItems: "center",
 			flexDirection: "row",
@@ -44,12 +42,14 @@ export function useStyles() {
 			borderRadius: 20
 		},
 		itemNo: {
-			backgroundColor: c.muted + "40",
+			// backgroundColor: c.muted + "40",
 			padding: 10,
-			borderRadius: 10,
+			// borderRadius: 10,
 			height: 40,
 			flexShrink: 0,
-			width: 60
+			width: 60,
+			borderRightColor: c.muted,
+			borderRightWidth: 1
 		},
 		itemNoText: {
 			fontSize: 20,
@@ -126,6 +126,10 @@ export function useStyles() {
 			borderTopColor: theme.colors.border,
 			borderTopWidth: 1,
 			marginTop: 20
+		},
+		leftmargin: {
+			textAlign: "left",
+			paddingLeft: 10
 		}
 	});
 }
