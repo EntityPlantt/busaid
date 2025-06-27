@@ -7,11 +7,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import { impactAsync } from "expo-haptics";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { FlatList, RefreshControl, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, RefreshControl, SafeAreaView, Text, TouchableOpacity } from "react-native";
 
-function secs() {
-	return Math.floor(Date.now() / 1e3);
-}
+const secs = () => Math.floor(Date.now() / 1e3);
 
 export default function Stop() {
 	const id = parseInt(useLocalSearchParams().id as string);
@@ -20,22 +18,23 @@ export default function Stop() {
 	const [refreshing, setRefreshing] = useState(false);
 	const [star, setStar] = useState(0);
 	const styles = useStyles(), colors = useColors();
-	const [stopLines, setStopLines] = useState([] as {
-		routeId: number;
-		arrival: number;
-	}[]);
+	const [stopLines, setStopLines] = useState([] as { routeId: number; arrival: number; }[]);
 	const [time, setTime] = useState(secs());
 	async function refresh() {
 		setRefreshing(true);
-		let sl = await db.getStopLines(id);
-		let r = [] as typeof stopLines;
-		sl.forEach(x => {
-			x.remainingTime.forEach(y => {
-				r.push({ routeId: x.routeId, arrival: secs() + y });
+		try {
+			let sl = await db.getStopLines(id);
+			let r = [] as typeof stopLines;
+			sl.forEach(x => {
+				x.remainingTime.forEach(y => {
+					r.push({ routeId: x.routeId, arrival: secs() + y });
+				});
 			});
-		});
-		r.sort((a, b) => a.arrival - b.arrival);
-		setStopLines(r);
+			r.sort((a, b) => a.arrival - b.arrival);
+			setStopLines(r);
+		} catch (_) {
+			console.error(_);
+		}
 		setRefreshing(false);
 	}
 	useEffect(() => {

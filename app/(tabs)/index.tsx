@@ -14,10 +14,9 @@ export default function Index() {
 	const colors = useColors();
 	const userdata = useUserData();
 	const refresh = useReducer(x => !x, false)[1];
-	return <SafeAreaView style={styles.view}>
-		<Text style={[styles.heading, { marginBottom: 20 }]}>Планер</Text>
-		<Button title="Освежи" color={colors.accent} onPress={refresh} />
-		<ScrollView>
+	return <SafeAreaView>
+		<ScrollView style={styles.view}>
+			<Text style={styles.heading}>Планер</Text>
 			<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
 				<Text style={styles.text}>Дестинации</Text>
 				<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />

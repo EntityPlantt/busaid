@@ -121,11 +121,9 @@ export function useStyles() {
 		stopbtn: {
 			display: "flex",
 			flexDirection: "row",
-			padding: 15,
 			paddingBottom: 0,
-			borderTopColor: theme.colors.border,
-			borderTopWidth: 1,
-			marginTop: 20
+			marginTop: 20,
+			paddingHorizontal: 20
 		},
 		leftmargin: {
 			textAlign: "left",
