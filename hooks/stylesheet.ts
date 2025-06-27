@@ -42,9 +42,7 @@ export function useStyles() {
 			borderRadius: 20
 		},
 		itemNo: {
-			// backgroundColor: c.muted + "40",
 			padding: 10,
-			// borderRadius: 10,
 			height: 40,
 			flexShrink: 0,
 			width: 60,
@@ -125,9 +123,33 @@ export function useStyles() {
 			marginTop: 20,
 			paddingHorizontal: 20
 		},
-		leftmargin: {
-			textAlign: "left",
-			paddingLeft: 10
+		recentList: {
+			borderColor: c.muted,
+			paddingVertical: 10,
+			borderBottomWidth: 1
+		},
+		itemVert: {
+			margin: 5,
+			display: "flex",
+			flexDirection: "column",
+			width: 125,
+			borderRadius: 15
+		},
+		itemNoVert: {
+			backgroundColor: c.muted + "40",
+			borderTopLeftRadius: 15,
+			borderTopRightRadius: 15
+		},
+		itemNoTextVert: {
+			fontSize: 35,
+			color: c.text,
+			textAlign: "center"
+		},
+		itemTextVert: {
+			color: c.text,
+			textAlign: "center",
+			paddingVertical: 5,
+			fontSize: 12
 		}
 	});
 }

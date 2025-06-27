@@ -42,6 +42,10 @@ export default function Stop() {
 		setStar(userdata.destinations.has(id) ? 1 : (userdata.interdestinations.has(id) ? 2 : 0));
 	}, []);
 	useEffect(() => {
+		if (userdata.recentStops.includes(id)) userdata.recentStops.splice(userdata.recentStops.indexOf(id), 1);
+		userdata.recentStops.unshift(id);
+		userdata.recentStops.splice(20);
+		setUserData(userdata);
 		let interval = setInterval(() => setTime(secs()), 1000);
 		return () => clearInterval(interval);
 	}, []);

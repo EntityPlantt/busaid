@@ -4,7 +4,7 @@ import useLoaded from "@/hooks/useLoaded";
 import useTheme from "@/hooks/useTheme";
 import db from "@/lib/jspdb";
 import { useState } from "react";
-import { FlatList, SafeAreaView, ScrollView } from "react-native";
+import { FlatList, SafeAreaView } from "react-native";
 import { Searchbar } from "react-native-paper";
 
 export default function Stops() {
@@ -18,7 +18,7 @@ export default function Stops() {
 			marginBottom: 20
 		}} />
 		<FlatList
-			data={Object.values(loaded ? db.data.stops : []).filter(x => (x.number + " " + x.name).toLowerCase().includes(query.toLowerCase())).slice(0, 50)}
+			data={Object.values(loaded ? db.data.stops : []).filter(x => (x.number + " " + x.name.toLowerCase()).includes(query.toLowerCase())).slice(0, 50)}
 			renderItem={({ item }) => <BusStop id={item.id} />}
 			keyExtractor={item => item.id.toString()} />
 	</SafeAreaView>;

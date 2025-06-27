@@ -2,7 +2,7 @@ import axios from "axios";
 import * as FileSystem from "expo-file-system";
 
 namespace db {
-	export const MAX_AGE = 604800000;
+	export const MAX_AGE = 86400000;
 	export const cachefile = FileSystem.cacheDirectory + "jspdata.json";
 
 	export interface Translations {

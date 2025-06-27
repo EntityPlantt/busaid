@@ -6,15 +6,19 @@ const filename = fs.documentDirectory + "userdata.json", fileopts = { encoding: 
 
 const initUserData = {
 	destinations: new Set<number>(),
-	interdestinations: new Set<number>()
+	interdestinations: new Set<number>(),
+	recentStops: [] as number[],
+	recentLines: [] as number[],
+	recentRoutes: [] as number[]
 };
 
-let globalSetUD: (x: typeof initUserData) => void = () => { throw new Error("Can't use hook rn"); };
+let globalSetUD = (_: typeof initUserData): void => { throw new Error("Can't use hook rn"); };
 
 export const useUserData = singletonHook(initUserData, () => {
 	const [userdata, setUserData] = useState(initUserData);
 	globalSetUD = data => {
 		fs.writeAsStringAsync(filename, JSON.stringify({
+			...data,
 			destinations: Array.from(data.destinations),
 			interdestinations: Array.from(data.interdestinations)
 		}), fileopts);
@@ -26,8 +30,9 @@ export const useUserData = singletonHook(initUserData, () => {
 			if (!(await fs.getInfoAsync(filename)).exists) return;
 			console.log("Loading userdata");
 			let d = JSON.parse(await fs.readAsStringAsync(filename, fileopts));
-			userdata.destinations.clear();
-			userdata.interdestinations.clear();
+			Object.assign(userdata, d);
+			userdata.destinations = new Set;
+			userdata.interdestinations = new Set;
 			d.destinations.forEach((x: number) => userdata.destinations.add(x));
 			d.interdestinations.forEach((x: number) => userdata.interdestinations.add(x));
 			console.log("Loaded userdata", d);

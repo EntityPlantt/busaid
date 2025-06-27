@@ -2,13 +2,22 @@ import BackButton from "@/components/BackButton";
 import BusRoute from "@/components/BusRoute";
 import { useStyles } from "@/hooks/stylesheet";
 import db from "@/lib/jspdb";
+import { setUserData, useUserData } from "@/lib/userdata";
 import { useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
 import { SafeAreaView, FlatList, Text, View } from "react-native";
 
 export default function Line() {
 	let id = parseInt(useLocalSearchParams().id as string);
 	let line = db.data.lines[id];
 	const styles = useStyles();
+	const userdata = useUserData();
+	useEffect(() => {
+		if (userdata.recentLines.includes(id)) userdata.recentLines.splice(userdata.recentLines.indexOf(id), 1);
+		userdata.recentLines.unshift(id);
+		userdata.recentLines.splice(20);
+		setUserData(userdata);
+	}, []);
 	if (!line) return <View style={styles.view}>
 		<Text style={styles.text}>Линијата не постои.</Text>
 	</View>;
