@@ -17,15 +17,7 @@ export default function Index() {
 	return <SafeAreaView style={styles.view}>
 		<Text style={[styles.heading, { marginBottom: 20 }]}>Планер</Text>
 		<Button title="Освежи" color={colors.accent} onPress={refresh} />
-		<TouchableOpacity style={{
-			display: "flex",
-			flexDirection: "row",
-			padding: 15,
-			paddingBottom: 0,
-			borderTopColor: colors.border,
-			borderTopWidth: 1,
-			marginTop: 20
-		}} onPress={() => router.push("/stops")}>
+		<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
 			<Text style={styles.text}>Дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>
@@ -33,15 +25,7 @@ export default function Index() {
 			data={loaded ? Array.from(userdata.destinations) : []}
 			renderItem={({ item }) => <BusStop id={item} />}
 			keyExtractor={String} />
-		<TouchableOpacity style={{
-			display: "flex",
-			flexDirection: "row",
-			padding: 15,
-			paddingBottom: 0,
-			borderTopColor: colors.border,
-			borderTopWidth: 1,
-			marginTop: 20
-		}} onPress={() => router.push("/stops")}>
+		<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
 			<Text style={styles.text}>Меѓу-дестинации</Text>
 			<FontAwesome name="plus" size={28} color={colors.text} style={{ marginLeft: "auto" }} />
 		</TouchableOpacity>

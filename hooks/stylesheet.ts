@@ -32,24 +32,27 @@ export function useStyles() {
 		},
 		item: {
 			marginTop: 5,
+			marginLeft: 10,
+			marginRight: 10,
 			paddingVertical: 10,
 			paddingHorizontal: 20,
 			flex: 1,
 			alignItems: "center",
 			flexDirection: "row",
 			backgroundColor: c.muted + "40",
-			minHeight: 70
+			minHeight: 50,
+			borderRadius: 20
 		},
 		itemNo: {
 			backgroundColor: c.muted + "40",
 			padding: 10,
 			borderRadius: 10,
-			height: 50,
+			height: 40,
 			flexShrink: 0,
-			width: 75
+			width: 60
 		},
 		itemNoText: {
-			fontSize: 30,
+			fontSize: 20,
 			color: c.text,
 			textAlign: "center"
 		},
@@ -114,6 +117,15 @@ export function useStyles() {
 			top: 30,
 			width: 50,
 			height: 50
+		},
+		stopbtn: {
+			display: "flex",
+			flexDirection: "row",
+			padding: 15,
+			paddingBottom: 0,
+			borderTopColor: theme.colors.border,
+			borderTopWidth: 1,
+			marginTop: 20
 		}
 	});
 }

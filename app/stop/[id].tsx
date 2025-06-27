@@ -6,7 +6,7 @@ import { setUserData, useUserData } from "@/lib/userdata";
 import { FontAwesome } from "@expo/vector-icons";
 import { impactAsync } from "expo-haptics";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, RefreshControl, SafeAreaView, Text, TouchableOpacity } from "react-native";
 
 export default function Stop() {
@@ -21,7 +21,6 @@ export default function Stop() {
 		arrival: number;
 	}[]);
 	async function refresh() {
-		console.log("Refreshing");
 		setRefreshing(true);
 		let sl = await db.getStopLines(id);
 		let r = [] as typeof stopLines;
@@ -33,7 +32,6 @@ export default function Stop() {
 		r.sort((a, b) => a.arrival - b.arrival);
 		setStopLines(r);
 		setRefreshing(false);
-		console.log("Refreshed", r.length);
 	}
 	useEffect(() => {
 		refresh();
@@ -41,7 +39,6 @@ export default function Stop() {
 	}, []);
 	console.log(userdata.destinations, userdata.interdestinations, star);
 	async function starClick() {
-		console.log("Star click", id);
 		if (star == 1) userdata.destinations.delete(id);
 		if (star == 2) userdata.interdestinations.delete(id);
 		if (star == 0) userdata.destinations.add(id);
@@ -50,7 +47,6 @@ export default function Stop() {
 		setStar(star ? 0 : 1);
 	}
 	async function starLongPress() {
-		console.log("Star long press", id);
 		if (star == 2) return;
 		if (star == 1) userdata.destinations.delete(id);
 		userdata.interdestinations.add(id);

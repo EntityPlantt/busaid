@@ -12,7 +12,6 @@ export default function SpeedCheck() {
 	const styles = useStyles(), [typed, setTyped] = useState(""), colors = useColors();
 	function click(key: string) {
 		impactAsync();
-		console.log(`Clicked on ${key}`);
 		if (key == "#") {
 			if (!loaded) return;
 			let line = Object.values(db.data.lines).find(l => l.number.toUpperCase().replaceAll(/[ ПН]/g, "") == typed);
