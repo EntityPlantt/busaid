@@ -9,6 +9,8 @@ import { router } from "expo-router";
 import { useReducer } from "react";
 import { sendHelloNotif } from "@/lib/notifications";
 
+import "@/lib/location";
+
 export default function Index() {
 	let loaded = useLoaded();
 	const styles = useStyles();

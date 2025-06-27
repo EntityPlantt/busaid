@@ -6,7 +6,7 @@ import { setUserData, useUserData } from "@/lib/userdata";
 import { FontAwesome } from "@expo/vector-icons";
 import { impactAsync } from "expo-haptics";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, RefreshControl, SafeAreaView, Text, TouchableOpacity } from "react-native";
 
 export default function Stop() {
@@ -37,14 +37,14 @@ export default function Stop() {
 	}
 	useEffect(() => {
 		refresh();
-		setStar(userdata.destinations.has(id) ? 1 : (userdata.interdestinations.has(id) ? 2 : 0));
+		setStar(userdata.destinations.includes(id) ? 1 : (userdata.interdestinations.includes(id) ? 2 : 0));
 	}, []);
 	console.log(userdata.destinations, userdata.interdestinations, star);
 	async function starClick() {
 		console.log("Star click", id);
-		if (star == 1) userdata.destinations.delete(id);
-		if (star == 2) userdata.interdestinations.delete(id);
-		if (star == 0) userdata.destinations.add(id);
+		if (star == 1) userdata.destinations.splice(userdata.destinations.indexOf(id), 1);
+		if (star == 2) userdata.interdestinations.splice(userdata.interdestinations.indexOf(id), 1);
+		if (star == 0) userdata.destinations.push(id);
 		await impactAsync();
 		setUserData(userdata);
 		setStar(star ? 0 : 1);
@@ -52,8 +52,8 @@ export default function Stop() {
 	async function starLongPress() {
 		console.log("Star long press", id);
 		if (star == 2) return;
-		if (star == 1) userdata.destinations.delete(id);
-		userdata.interdestinations.add(id);
+		if (star == 1) userdata.destinations.splice(userdata.destinations.indexOf(id), 1);
+		userdata.interdestinations.push(id);
 		await impactAsync();
 		setUserData(userdata);
 		setStar(2);

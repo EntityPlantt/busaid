@@ -14,8 +14,8 @@ export default function BusRoute({ id, arrival }: { id: number, arrival?: number
 	if (!route) return null;
 	let line = db.data.lines[route.lineId];
 	if (!line) return null;
-	const backgroundColor = (route.stopIds.some(x => userdata.destinations.has(x)) ? colors.accent : (
-		route.stopIds.some(x => userdata.interdestinations.has(x)) ? colors.blue : colors.muted
+	const backgroundColor = (route.stopIds.some(x => userdata.destinations.includes(x)) ? colors.accent : (
+		route.stopIds.some(x => userdata.interdestinations.includes(x)) ? colors.blue : colors.muted
 	)) + "40";
 	return <TouchableOpacity style={[styles.item, { backgroundColor }]} onPress={() => router.push(`/route/${id}`)}>
 		<View style={styles.itemNo}>

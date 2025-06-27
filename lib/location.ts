@@ -39,7 +39,7 @@ TaskManager.defineTask(TASK, async ({ data, error }) => {
 	await Location.startLocationUpdatesAsync(TASK, {
 		accuracy: Location.Accuracy.Highest,
 		timeInterval: 5000,
-		distanceInterval: 0,
+		distanceInterval: 1,
 		foregroundService: {
 			notificationTitle: "Bus Aid ја следи Вашата локација",
 			notificationColor: "#00c418",
@@ -47,7 +47,7 @@ TaskManager.defineTask(TASK, async ({ data, error }) => {
 			killServiceOnDestroy: false
 		},
 		pausesUpdatesAutomatically: false,
-		mayShowUserSettingsDialog: true
+		mayShowUserSettingsDialog: true,
 	}).catch(x => console.error(x));
 	console.log("Set up location");
 })();
