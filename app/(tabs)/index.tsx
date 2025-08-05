@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import BusStop from "@/components/BusStop";
 import BusRoute from "@/components/BusRoute";
 import BusLine from "@/components/BusLine";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Index() {
 	let loaded = useLoaded();
@@ -16,7 +17,10 @@ export default function Index() {
 	const userdata = useUserData();
 	return <SafeAreaView>
 		<ScrollView>
-			<Text style={[styles.heading, { paddingVertical: 20, backgroundColor: colors.accent + "80", fontSize: 50 }]}>BusAid</Text>
+			<LinearGradient colors={[colors.accent, colors.blue]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+				<Text style={[styles.heading, { paddingVertical: 20, fontSize: 50 }]}>BusAid</Text>
+				<LinearGradient colors={["#0000", "#121212"]} style={{ height: 10 }} />
+			</LinearGradient>
 			<Text style={[styles.text, styles.stopbtn, { textAlign: "left" }]}>Неодамнешни постојки</Text>
 			<FlatList style={styles.recentList} horizontal data={userdata.recentStops} renderItem={({ item }) => <BusStop id={item} vert />} />
 			<Text style={[styles.text, styles.stopbtn, { textAlign: "left" }]}>Неодамнешни рути</Text>

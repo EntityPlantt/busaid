@@ -7,7 +7,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { impactAsync } from "expo-haptics";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { FlatList, RefreshControl, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import { RefreshControl, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 const secs = () => Math.floor(Date.now() / 1e3);
 
@@ -24,7 +25,7 @@ export default function Stop() {
 		setRefreshing(true);
 		try {
 			let sl = await db.getStopLines(id);
-			let r = [] as typeof stopLines;
+			let r: typeof stopLines = [];
 			sl.forEach(x => {
 				x.remainingTime.forEach(y => {
 					r.push({ routeId: x.routeId, arrival: secs() + y });
@@ -73,9 +74,10 @@ export default function Stop() {
 		<Text style={styles.heading}><Text style={styles.muted}>{stop.number}</Text> {stop.name}</Text>
 		<Text style={[styles.text, styles.muted]}>{stop.lat}, {stop.lon}</Text>
 		{stop.note && <Text style={styles.text}>{stop.note}</Text>}
-		<FlatList data={stopLines.slice(0, 50)}
+		<Animated.FlatList data={stopLines.slice(0, 50)}
 			renderItem={({ item }) => <BusRoute id={item.routeId} arrival={item.arrival - time} arrtime={item.arrival} />}
 			keyExtractor={item => item.routeId + " " + item.arrival}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />} />
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
+			itemLayoutAnimation={LinearTransition.duration(300)} />
 	</SafeAreaView>;
 }
