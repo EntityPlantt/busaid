@@ -9,7 +9,6 @@ import { useEffect } from "react";
 export default function RootLayout() {
 	const theme = useTheme();
 	useEffect(() => {
-		NavigationBar.setBackgroundColorAsync(theme.colors.background);
 		NavigationBar.setButtonStyleAsync(theme.dark ? "light" : "dark");
 	}, [theme]);
 	return <ThemeProvider value={theme}>

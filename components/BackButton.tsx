@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 
 export default function BackButton() {
 	const styles = useStyles(), colors = useColors();
-	return <TouchableOpacity style={styles.back} onPress={router.back}>
+	return <TouchableOpacity style={styles.button} onPress={router.back}>
 		<AntDesign name="left" size={28} color={colors.text} style={styles.topBtnIcon} />
 	</TouchableOpacity>;
 }

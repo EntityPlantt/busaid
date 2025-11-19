@@ -1,5 +1,6 @@
 import BackButton from "@/components/BackButton";
 import BusRoute from "@/components/BusRoute";
+import ButtonPanel from "@/components/ButtonPanel";
 import { useColors, useStyles } from "@/hooks/stylesheet";
 import db from "@/lib/jspdb";
 import { setUserData, useUserData } from "@/lib/userdata";
@@ -65,10 +66,13 @@ export default function Stop() {
 		setStar(2);
 	}
 	return <SafeAreaView style={styles.view}>
-		<BackButton />
-		<TouchableOpacity style={styles.stopStar} onPress={starClick} onLongPress={starLongPress}>
-			<FontAwesome style={styles.topBtnIcon} name={star ? "star" : "star-o"} color={[colors.text, colors.accent, colors.blue][star]} size={28} />
-		</TouchableOpacity>
+		<ButtonPanel>
+			<BackButton />
+			{null}
+			<TouchableOpacity style={styles.button} onPress={starClick} onLongPress={starLongPress}>
+				<FontAwesome style={styles.topBtnIcon} name={star ? "star" : "star-o"} color={[colors.text, colors.accent, colors.blue][star]} size={28} />
+			</TouchableOpacity>
+		</ButtonPanel>
 		<Text style={styles.heading}><Text style={styles.muted}>{stop.number}</Text> {stop.name}</Text>
 		<Text style={[styles.text, styles.muted]}>{stop.lat}, {stop.lon}</Text>
 		{stop.note && <Text style={styles.text}>{stop.note}</Text>}

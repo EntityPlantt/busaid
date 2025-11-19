@@ -1,5 +1,6 @@
 import BackButton from "@/components/BackButton";
 import BusStop from "@/components/BusStop";
+import ButtonPanel from "@/components/ButtonPanel";
 import { useStyles } from "@/hooks/stylesheet";
 import db from "@/lib/jspdb";
 import { setUserData, useUserData } from "@/lib/userdata";
@@ -24,7 +25,10 @@ export default function Route() {
 		<Text style={styles.text}>Рутата не постои или е невалидна.</Text>
 	</View>;
 	return <SafeAreaView style={styles.view}>
-		<BackButton />
+		<ButtonPanel>
+			<BackButton />
+			{null}
+		</ButtonPanel>
 		<Text style={styles.heading}>{route.name}</Text>
 		<Text style={styles.text}>{line.name}</Text>
 		<FlatList data={route.stopIds} renderItem={({ item }) => <BusStop id={item} />} keyExtractor={String} />
