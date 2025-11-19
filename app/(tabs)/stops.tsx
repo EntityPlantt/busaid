@@ -4,9 +4,9 @@ import useLoaded from "@/hooks/useLoaded";
 import useTheme from "@/hooks/useTheme";
 import db from "@/lib/jspdb";
 import { useState } from "react";
-import { FlatList } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Animated, { CurvedTransition } from "react-native-reanimated";
 import useLocation from "@/hooks/useLocation";
 
 // https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
@@ -42,12 +42,13 @@ export default function Stops() {
 			marginHorizontal: 10,
 			marginBottom: 20
 		}} />
-		<FlatList
+		<Animated.FlatList
 			data={Object.values(loaded ? db.data.stops : [])
 				.filter(x => (x.number + " " + x.name.toLowerCase()).includes(query.toLowerCase()))
 				.sort(pos.lat !== undefined ? (a, b) => distanceTo(a.lat, a.lon) - distanceTo(b.lat, b.lon) : (a, b) => a.id - b.id)
 				.slice(0, 50)}
 			renderItem={({ item }) => <BusStop id={item.id} />}
-			keyExtractor={item => item.id.toString()} />
+			keyExtractor={item => item.id.toString()}
+			itemLayoutAnimation={CurvedTransition.duration(500)} />
 	</SafeAreaView>;
 }
