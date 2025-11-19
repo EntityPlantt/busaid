@@ -13,19 +13,19 @@ const initUserData = {
 	recentRoutes: [] as number[]
 };
 
-let globalSetUD = (_: typeof initUserData): void => { throw new Error("Can't use hook rn"); };
+let globalSetUD = (): void => { throw new Error("Can't use hook rn"); };
 
 export const useUserData = singletonHook(initUserData, () => {
 	const [userdata, setUserData] = useState(initUserData);
-	globalSetUD = data => {
+	globalSetUD = () => {
 		if (!filename.exists) filename.create();
 		filename.write(JSON.stringify({
-			...data,
-			destinations: Array.from(data.destinations),
-			interdestinations: Array.from(data.interdestinations)
+			...userdata,
+			destinations: Array.from(userdata.destinations),
+			interdestinations: Array.from(userdata.interdestinations)
 		}), fileopts);
 		console.log("Saved userdata");
-		setUserData(data);
+		setUserData(Object.assign({}, userdata));
 	};
 	useEffect(() => {
 		(async () => {
@@ -36,12 +36,12 @@ export const useUserData = singletonHook(initUserData, () => {
 			userdata.destinations = new Set(d.destinations);
 			userdata.interdestinations = new Set(d.interdestinations);
 			console.log("Loaded userdata", d);
-			setUserData(userdata);
+			setUserData(Object.assign({}, userdata));
 		})();
 	}, []);
 	return userdata;
 });
 
-export function setUserData(v: typeof initUserData) {
-	globalSetUD(v);
+export function setUserData() {
+	globalSetUD();
 }

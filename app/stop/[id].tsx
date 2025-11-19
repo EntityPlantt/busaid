@@ -44,7 +44,7 @@ export default function Stop() {
 		if (userdata.recentStops.includes(id)) userdata.recentStops.splice(userdata.recentStops.indexOf(id), 1);
 		userdata.recentStops.unshift(id);
 		userdata.recentStops.splice(20);
-		setUserData(userdata);
+		setUserData();
 		let interval = setInterval(() => setTime(secs()), 1000);
 		return () => clearInterval(interval);
 	}, []);
@@ -53,7 +53,7 @@ export default function Stop() {
 		if (star == 2) userdata.interdestinations.delete(id);
 		if (star == 0) userdata.destinations.add(id);
 		await impactAsync();
-		setUserData(userdata);
+		setUserData();
 		setStar(star ? 0 : 1);
 	}
 	async function starLongPress() {
@@ -61,7 +61,7 @@ export default function Stop() {
 		if (star == 1) userdata.destinations.delete(id);
 		userdata.interdestinations.add(id);
 		await impactAsync();
-		setUserData(userdata);
+		setUserData();
 		setStar(2);
 	}
 	return <SafeAreaView style={styles.view}>

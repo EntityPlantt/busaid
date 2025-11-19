@@ -18,7 +18,7 @@ export default function Route() {
 		if (userdata.recentRoutes.includes(id)) userdata.recentRoutes.splice(userdata.recentRoutes.indexOf(id), 1);
 		userdata.recentRoutes.unshift(id);
 		userdata.recentRoutes.splice(20);
-		setUserData(userdata);
+		setUserData();
 	}, []);
 	if (!route || !line) return <View style={styles.view}>
 		<Text style={styles.text}>Рутата не постои или е невалидна.</Text>

@@ -17,7 +17,7 @@ export default function Line() {
 		if (userdata.recentLines.includes(id)) userdata.recentLines.splice(userdata.recentLines.indexOf(id), 1);
 		userdata.recentLines.unshift(id);
 		userdata.recentLines.splice(20);
-		setUserData(userdata);
+		setUserData();
 	}, []);
 	if (!line) return <View style={styles.view}>
 		<Text style={styles.text}>Линијата не постои.</Text>
