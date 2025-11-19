@@ -4,8 +4,9 @@ import db from "@/lib/jspdb";
 import { impactAsync } from "expo-haptics";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Dimensions, SafeAreaView, Text } from "react-native";
+import { Dimensions, Text } from "react-native";
 import { DataTable } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SpeedCheck() {
 	const loaded = useLoaded();

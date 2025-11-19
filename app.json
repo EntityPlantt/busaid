@@ -14,7 +14,8 @@
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         }
-      }
+      },
+      "bundleIdentifier": "io.github.entityplantt.busaid"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +23,12 @@
         "backgroundColor": "#00620c"
       },
       "package": "io.github.entityplantt.busaid",
-	  "edgeToEdgeEnabled": false
+      "edgeToEdgeEnabled": false,
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET"
+      ]
     },
     "web": {
       "bundler": "metro",

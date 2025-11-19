@@ -1,9 +1,9 @@
 import axios from "axios";
-import * as FileSystem from "expo-file-system";
+import { Paths, File } from "expo-file-system";
 
 namespace db {
 	export const MAX_AGE = 86400000;
-	export const cachefile = FileSystem.cacheDirectory + "jspdata.json";
+	export const cachefile = new File(Paths.cache, "jspdata.json");
 
 	export interface Translations {
 		en?: string;
@@ -30,6 +30,7 @@ namespace db {
 		end: number;
 		length: number;
 		stopIds: number[];
+		stopIdSet: Set<number>;
 		stopOffsets: number[];
 	};
 	export interface Line {
@@ -69,6 +70,7 @@ namespace db {
 		routes: {} as { [id: string]: Route },
 		lines: {} as { [id: string]: Line }
 	};
+	export const routeSets: { [id: string]: Route } = {};
 
 	export async function fetchData(dataFetchLogSetter?: React.Dispatch<React.SetStateAction<string>>) {
 		if (!dataFetchLogSetter) dataFetchLogSetter = () => { };
@@ -85,6 +87,7 @@ namespace db {
 		resp = await rest.get("/rest-its/scheme/routes", req);
 		resp.data.forEach((x: Route) => {
 			data.routes[x.id] = x;
+			x.stopIdSet = new Set(x.stopIds);
 		});
 		dataFetchLogSetter("Преземени рути");
 		resp = await rest.get("/rest-its/scheme/lines", req);
@@ -93,13 +96,16 @@ namespace db {
 		});
 		dataFetchLogSetter("Преземени линии");
 		data.timestamp = Date.now();
-		await FileSystem.writeAsStringAsync(cachefile, JSON.stringify(data), { encoding: "utf8" });
+		if (!cachefile.exists) cachefile.create();
+		cachefile.write(JSON.stringify(data), { encoding: "utf8" });
 		dataFetchLogSetter("Освежено");
 	}
 	export async function init() {
-		if ((await FileSystem.getInfoAsync(cachefile)).exists) {
-			if (JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })).timestamp + MAX_AGE > Date.now()) {
-				Object.assign(data, JSON.parse(await FileSystem.readAsStringAsync(cachefile, { encoding: "utf8" })));
+		if (cachefile.exists) {
+			let newdata = JSON.parse(cachefile.textSync());
+			if (newdata.timestamp + MAX_AGE > Date.now()) {
+				Object.assign(data, newdata);
+				Object.values(data.routes).forEach(x => x.stopIdSet = new Set(x.stopIds));
 				return;
 			}
 		}

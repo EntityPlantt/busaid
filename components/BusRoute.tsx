@@ -1,19 +1,17 @@
 import db from "@/lib/jspdb";
 import { View, Text, TouchableOpacity } from "react-native";
-import useLoaded from "@/hooks/useLoaded";
 import { useColors, useStyles } from "@/hooks/stylesheet";
 import { router } from "expo-router";
 import { useUserData } from "@/lib/userdata";
 import { useMemo } from "react";
 
 export default function BusRoute({ id, arrival, arrtime, vert }: { id: number, arrival?: number, arrtime?: number, vert?: boolean }) {
-	const loaded = useLoaded();
 	const styles = useStyles(), colors = useColors();
 	const userdata = useUserData();
 	let route = db.data.routes[id];
-	const bg = useMemo(() => loaded && route ? route.stopIds.some(x => userdata.destinations.has(x)) ? colors.accent : (
-		route.stopIds.some(x => userdata.interdestinations.has(x)) ? colors.blue : colors.muted
-	) : "#000000", [userdata, loaded]) + "40";
+	const bg = useMemo(() => route ? Array.from(userdata.destinations).some(x => route.stopIdSet.has(x)) ? colors.accent : (
+		Array.from(userdata.interdestinations).some(x => route.stopIdSet.has(x)) ? colors.blue : colors.muted
+	) : "#000000", [userdata]) + "40";
 	return <TouchableOpacity onPress={() => router.push(`/route/${id}`)}
 		style={[vert ? styles.itemVert : styles.item, {
 			backgroundColor: typeof arrival === "number" && arrival < 0 ? "#0000" : bg,

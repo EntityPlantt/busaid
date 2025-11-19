@@ -4,8 +4,9 @@ import useLoaded from "@/hooks/useLoaded";
 import useTheme from "@/hooks/useTheme";
 import db from "@/lib/jspdb";
 import { useState } from "react";
-import { FlatList, SafeAreaView } from "react-native";
+import { FlatList } from "react-native";
 import { Searchbar } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Stops() {
 	const loaded = useLoaded();

@@ -3,8 +3,9 @@ import useThemeType from "@/hooks/useThemeType";
 import db from "@/lib/jspdb";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
-import { SafeAreaView, Text, Button } from "react-native";
+import { Text, Button } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const themeOptions = [
 	{ label: "Системска", value: "" },
@@ -39,7 +40,7 @@ export default function Settings() {
 			}} />} />
 		<Text style={[styles.text, { marginTop: 15 }]}>Освежување на датабазата на автобуски станици, линии и рути</Text>
 		<Text style={[styles.text, styles.muted, { marginBottom: 15 }]}>Последно освежено: {new Date(lastFetch).toLocaleString("mk")}</Text>
-		<Button title={fetchingLog || "Освежи"} color={colors.accent} disabled={fetching} onPress={() => {
+		<Button title={fetchingLog || "Освежи"} color={fetching ? colors.muted : colors.accent} disabled={fetching} onPress={() => {
 			setFetching(true);
 			db.fetchData(setFetchingLog).then(() => {
 				setLastFetch(db.data.timestamp);

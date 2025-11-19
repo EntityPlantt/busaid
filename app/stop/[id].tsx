@@ -7,8 +7,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { impactAsync } from "expo-haptics";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { RefreshControl, SafeAreaView, Text, TouchableOpacity } from "react-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
+import { FlatList, RefreshControl, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const secs = () => Math.floor(Date.now() / 1e3);
 
@@ -41,8 +41,6 @@ export default function Stop() {
 	useEffect(() => {
 		refresh();
 		setStar(userdata.destinations.has(id) ? 1 : (userdata.interdestinations.has(id) ? 2 : 0));
-	}, []);
-	useEffect(() => {
 		if (userdata.recentStops.includes(id)) userdata.recentStops.splice(userdata.recentStops.indexOf(id), 1);
 		userdata.recentStops.unshift(id);
 		userdata.recentStops.splice(20);
@@ -74,10 +72,9 @@ export default function Stop() {
 		<Text style={styles.heading}><Text style={styles.muted}>{stop.number}</Text> {stop.name}</Text>
 		<Text style={[styles.text, styles.muted]}>{stop.lat}, {stop.lon}</Text>
 		{stop.note && <Text style={styles.text}>{stop.note}</Text>}
-		<Animated.FlatList data={stopLines.slice(0, 50)}
+		<FlatList data={stopLines.slice(0, 50)}
 			renderItem={({ item }) => <BusRoute id={item.routeId} arrival={item.arrival - time} arrtime={item.arrival} />}
 			keyExtractor={item => item.routeId + " " + item.arrival}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
-			itemLayoutAnimation={LinearTransition.duration(300)} />
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />} />
 	</SafeAreaView>;
 }

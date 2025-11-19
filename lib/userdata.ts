@@ -1,8 +1,9 @@
-import * as fs from "expo-file-system";
+import { File, Paths } from "expo-file-system";
+import type { EncodingType } from "expo-file-system/build/ExpoFileSystem.types";
 import { useEffect, useState } from "react";
 import { singletonHook } from "react-singleton-hook";
 
-const filename = fs.documentDirectory + "userdata.json", fileopts = { encoding: "utf8" as fs.EncodingType };
+const filename = new File(Paths.cache, "userdata.json"), fileopts = { encoding: "utf8" as EncodingType };
 
 const initUserData = {
 	destinations: new Set<number>(),
@@ -17,7 +18,8 @@ let globalSetUD = (_: typeof initUserData): void => { throw new Error("Can't use
 export const useUserData = singletonHook(initUserData, () => {
 	const [userdata, setUserData] = useState(initUserData);
 	globalSetUD = data => {
-		fs.writeAsStringAsync(filename, JSON.stringify({
+		if (!filename.exists) filename.create();
+		filename.write(JSON.stringify({
 			...data,
 			destinations: Array.from(data.destinations),
 			interdestinations: Array.from(data.interdestinations)
@@ -27,14 +29,12 @@ export const useUserData = singletonHook(initUserData, () => {
 	};
 	useEffect(() => {
 		(async () => {
-			if (!(await fs.getInfoAsync(filename)).exists) return;
+			if (!filename.exists) return;
 			console.log("Loading userdata");
-			let d = JSON.parse(await fs.readAsStringAsync(filename, fileopts));
+			let d = JSON.parse(filename.textSync());
 			Object.assign(userdata, d);
-			userdata.destinations = new Set;
-			userdata.interdestinations = new Set;
-			d.destinations.forEach((x: number) => userdata.destinations.add(x));
-			d.interdestinations.forEach((x: number) => userdata.interdestinations.add(x));
+			userdata.destinations = new Set(d.destinations);
+			userdata.interdestinations = new Set(d.interdestinations);
 			console.log("Loaded userdata", d);
 			setUserData(userdata);
 		})();

@@ -5,7 +5,8 @@ import db from "@/lib/jspdb";
 import { setUserData, useUserData } from "@/lib/userdata";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
-import { FlatList, SafeAreaView, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Route() {
 	let id = parseInt(useLocalSearchParams().id as string);
