@@ -24,7 +24,7 @@ export default function Settings() {
 	}
 	return <SafeAreaView style={styles.view}>
 		<Text style={styles.heading}>Подесувања</Text>
-		<Text style={[styles.text, { marginTop: 15 }]}>Тема (треба да се рестартира апликацијата да се смени)</Text>
+		<Text style={[styles.text, { marginTop: 15 }]}>Тема</Text>
 		<Dropdown
 			data={themeOptions}
 			labelField="label"

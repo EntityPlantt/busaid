@@ -10,7 +10,8 @@ const initUserData = {
 	interdestinations: new Set<number>(),
 	recentStops: [] as number[],
 	recentLines: [] as number[],
-	recentRoutes: [] as number[]
+	recentRoutes: [] as number[],
+	theme: null as string | null
 };
 
 let globalSetUD = (): void => { throw new Error("Can't use hook rn"); };
@@ -24,19 +25,16 @@ export const useUserData = singletonHook(initUserData, () => {
 			destinations: Array.from(userdata.destinations),
 			interdestinations: Array.from(userdata.interdestinations)
 		}), fileopts);
-		console.log("Saved userdata");
 		setUserData(Object.assign({}, userdata));
 	};
 	useEffect(() => {
 		(async () => {
 			if (!filename.exists) return;
-			console.log("Loading userdata");
 			let d = JSON.parse(filename.textSync());
-			Object.assign(userdata, d);
-			userdata.destinations = new Set(d.destinations);
-			userdata.interdestinations = new Set(d.interdestinations);
+			d.destinations = new Set(d.destinations);
+			d.interdestinations = new Set(d.interdestinations);
 			console.log("Loaded userdata", d);
-			setUserData(Object.assign({}, userdata));
+			setUserData(Object.assign({}, userdata, d));
 		})();
 	}, []);
 	return userdata;

@@ -1,10 +1,9 @@
-import type { Theme } from "@react-navigation/native";
-import { fonts } from "@react-navigation/native/src/theming/fonts";
+import { Theme, DarkTheme as dt, DefaultTheme as lt } from "@react-navigation/native";
 import useThemeType from "./useThemeType";
 
 export const DarkTheme: Theme = {
 	dark: true,
-	fonts,
+	fonts: dt.fonts,
 	colors: {
 		text: "#ffffff",
 		background: "#121212",
@@ -15,7 +14,7 @@ export const DarkTheme: Theme = {
 	}
 }, DefaultTheme: Theme = {
 	dark: false,
-	fonts,
+	fonts: lt.fonts,
 	colors: {
 		text: "#212121",
 		background: "#ffffff",

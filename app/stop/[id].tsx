@@ -8,8 +8,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import { impactAsync } from "expo-haptics";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { FlatList, RefreshControl, Text, TouchableOpacity } from "react-native";
+import { RefreshControl, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Animated, { CurvedTransition } from "react-native-reanimated";
 
 const secs = () => Math.floor(Date.now() / 1e3);
 
@@ -20,7 +21,7 @@ export default function Stop() {
 	const [refreshing, setRefreshing] = useState(false);
 	const [star, setStar] = useState(0);
 	const styles = useStyles(), colors = useColors();
-	const [stopLines, setStopLines] = useState([] as { routeId: number; arrival: number; }[]);
+	const [stopLines, setStopLines] = useState([] as { routeId: number; arrival: number; index: number; }[]);
 	const [time, setTime] = useState(secs());
 	async function refresh() {
 		setRefreshing(true);
@@ -28,8 +29,8 @@ export default function Stop() {
 			let sl = await db.getStopLines(id);
 			let r: typeof stopLines = [];
 			sl.forEach(x => {
-				x.remainingTime.forEach(y => {
-					r.push({ routeId: x.routeId, arrival: secs() + y });
+				x.remainingTime.forEach((y, index) => {
+					r.push({ routeId: x.routeId, arrival: secs() + y, index });
 				});
 			});
 			r.sort((a, b) => a.arrival - b.arrival);
@@ -46,7 +47,7 @@ export default function Stop() {
 		userdata.recentStops.unshift(id);
 		userdata.recentStops.splice(20);
 		setUserData();
-		let interval = setInterval(() => setTime(secs()), 1000);
+		let interval = setInterval(() => setTime(secs()), 500);
 		return () => clearInterval(interval);
 	}, []);
 	async function starClick() {
@@ -76,9 +77,10 @@ export default function Stop() {
 		<Text style={styles.heading}><Text style={styles.muted}>{stop.number}</Text> {stop.name}</Text>
 		<Text style={[styles.text, styles.muted]}>{stop.lat}, {stop.lon}</Text>
 		{stop.note && <Text style={styles.text}>{stop.note}</Text>}
-		<FlatList data={stopLines.slice(0, 50)}
+		<Animated.FlatList data={stopLines.slice(0, 50)}
 			renderItem={({ item }) => <BusRoute id={item.routeId} arrival={item.arrival - time} arrtime={item.arrival} />}
-			keyExtractor={item => item.routeId + " " + item.arrival}
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />} />
+			keyExtractor={item => item.routeId + " " + item.index}
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
+			itemLayoutAnimation={CurvedTransition.duration(750)} />
 	</SafeAreaView>;
 }

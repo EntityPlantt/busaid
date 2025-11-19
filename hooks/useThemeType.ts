@@ -1,18 +1,12 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { setUserData, useUserData } from "@/lib/userdata";
 import { useColorScheme } from "react-native";
 
 
 export default function useThemeType() {
-	let [theme, setTheme] = useState(null as string | null);
-	let scheme = useColorScheme();
-	useEffect(() => {
-		AsyncStorage.getItem("theme").then(setTheme);
-	}, []);
+	const userdata = useUserData(), scheme = useColorScheme();
 	async function updateTheme(th: string | null) {
-		if (th) await AsyncStorage.setItem("theme", th);
-		else await AsyncStorage.removeItem("theme");
-		setTheme(th);
+		userdata.theme = th;
+		setUserData();
 	}
-	return {theme: theme || scheme, themeSetting: theme, updateTheme};
+	return {theme: userdata.theme || scheme, themeSetting: userdata.theme, updateTheme};
 }
