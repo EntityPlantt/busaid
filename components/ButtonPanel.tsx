@@ -9,8 +9,8 @@ export default function ButtonPanel({ children }: { children: React.ReactNode[] 
 	let i = children.indexOf(null);
 	const styles = useStyles();
 	return <View style={styles.buttonPanel}>
-		<View children={children.slice(0, i)} />
-		<View />
-		<View children={children.slice(i + 1)} />
+		<View children={children.slice(0, i)} style={styles.buttonPanelSide} />
+		<View style={{ paddingHorizontal: 25 }} />
+		<View children={children.slice(i + 1)} style={styles.buttonPanelSide} />
 	</View>;
 }

@@ -1,23 +1,30 @@
+import { setUserData, useUserData } from "@/lib/userdata";
 import { getLastKnownPositionAsync, useForegroundPermissions } from "expo-location";
 import { useEffect, useState } from "react";
 
-export default function useLocation() {
+export default function useLocation(): [{ lat?: number, lon?: number }, () => void, () => void] {
 	const [perms, req] = useForegroundPermissions();
 	req();
-	const [{ lat, lon }, updatePos] = useState({ lat: 0 as number | undefined, lon: 0 as number | undefined });
+	const userdata = useUserData(), continuous = userdata.continuousLocation;
+	const [{ lat, lon }, updatePos] = useState({ lat: undefined as number | undefined, lon: undefined as number | undefined });
+	async function getPos() {
+		console.log(new Date().toString(), "Fetching location");
+		let pos = await getLastKnownPositionAsync();
+		updatePos({
+			lat: pos?.coords.latitude,
+			lon: pos?.coords.longitude
+		});
+	}
 	useEffect(() => {
-		if (perms?.granted) {
-			async function getPos() {
-				let pos = await getLastKnownPositionAsync();
-				updatePos({
-					lat: pos?.coords.latitude,
-					lon: pos?.coords.longitude
-				});
-			}
-			let int = setInterval(getPos, 1e4);
+		console.log(perms?.granted, continuous);
+		if (perms?.granted && continuous) {
+			let int = setInterval(() => getPos(), 1e4);
 			getPos();
 			return () => clearInterval(int);
 		}
-	}, [perms]);
-	return { lat, lon };
+	}, [perms?.granted, continuous]);
+	return [{ lat, lon }, getPos, () => {
+		userdata.continuousLocation = !continuous;
+		setUserData();
+	}];
 }

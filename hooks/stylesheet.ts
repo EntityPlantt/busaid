@@ -107,7 +107,15 @@ export function useStyles() {
 			paddingHorizontal: 15,
 			display: "flex",
 			justifyContent: "space-between",
+			alignItems: "center",
 			flexDirection: "row",
+		},
+		buttonPanelSide: {
+			display: "flex",
+			flexDirection: "row",
+			alignItems: "center",
+			flexGrow: 0,
+			flexShrink: 0,
 		},
 		topBtnIcon: {
 			position: "relative",

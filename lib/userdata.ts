@@ -11,7 +11,8 @@ const initUserData = {
 	recentStops: [] as number[],
 	recentLines: [] as number[],
 	recentRoutes: [] as number[],
-	theme: null as string | null
+	theme: null as string | null,
+	continuousLocation: false,
 };
 
 let globalSetUD = (): void => { throw new Error("Can't use hook rn"); };
