@@ -47,6 +47,8 @@ export default function Stops() {
 				marginHorizontal: 10,
 				marginBottom: 20,
 				width: 200,
+				position: "relative",
+				top: 5,
 			}} />
 			{null}
 			<TouchableOpacity style={style.button} onPress={toggleContinousFetching}>

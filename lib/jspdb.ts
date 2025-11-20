@@ -98,7 +98,7 @@ namespace db {
 		data.timestamp = Date.now();
 		if (!cachefile.exists) cachefile.create();
 		cachefile.write(JSON.stringify(data), { encoding: "utf8" });
-		dataFetchLogSetter("Освежено");
+		dataFetchLogSetter("");
 	}
 	export async function init() {
 		if (cachefile.exists) {

@@ -157,5 +157,21 @@ export function useStyles() {
 			paddingVertical: 5,
 			fontSize: 12,
 		},
+		setting: {
+			borderBottomColor: c.muted,
+			borderBottomWidth: 2,
+			display: "flex",
+			flexDirection: "row",
+			alignItems: "center",
+			justifyContent: "space-between",
+			gap: 50,
+			padding: 10
+		},
+		settingName: {
+			display: "flex",
+			flexDirection: "column",
+			wordWrap: "break-word",
+			flexShrink: 1,
+		},
 	});
 }
