@@ -1,0 +1,86 @@
+import { version } from "./package.json";
+
+const name = "Bus Aid", slug = "busaid", identifier = "io.github.entityplantt.busaid";
+
+export default {
+	expo: {
+		name,
+		slug,
+		version,
+		orientation: "portrait",
+		icon: "./assets/images/icon.png",
+		scheme: slug,
+		userInterfaceStyle: "automatic",
+		newArchEnabled: true,
+		ios: {
+			supportsTablet: false,
+			infoPlist: {
+				NSAppTransportSecurity: {
+					NSAllowsArbitraryLoads: true,
+				},
+			},
+			bundleIdentifier: identifier,
+		},
+		android: {
+			adaptiveIcon: {
+				foregroundImage: "./assets/images/adaptive-icon.png",
+				backgroundColor: "#00620c",
+			},
+			package: identifier,
+			permissions: [
+				"android.permission.READ_EXTERNAL_STORAGE",
+				"android.permission.WRITE_EXTERNAL_STORAGE",
+				"android.permission.INTERNET",
+			],
+		},
+		web: {
+			bundler: "metro",
+			output: "static",
+			favicon: "./assets/images/favicon.png",
+		},
+		plugins: [
+			"expo-router",
+			[
+				"expo-splash-screen",
+				{
+					image: "./assets/images/splash-icon.png",
+					imageWidth: 200,
+					resizeMode: "contain",
+					backgroundColor: "#000000",
+				},
+			],
+			"expo-file-system",
+			[
+				"expo-build-properties",
+				{
+					android: {
+						usesCleartextTraffic: true,
+					},
+					ios: {
+						flipper: true,
+					},
+				},
+			],
+			"expo-font",
+			"expo-web-browser",
+			[
+				"expo-location",
+				{
+					isAndroidForegroundServiceEnabled: true,
+				},
+			],
+		],
+		experiments: {
+			typedRoutes: true,
+		},
+		backgroundColor: "#000000",
+		extra: {
+			router: {
+				origin: false,
+			},
+			eas: {
+				projectId: "39872456-3c01-4de7-a3b2-337c56379fce",
+			},
+		},
+	},
+}

@@ -7,13 +7,14 @@ import { useState } from "react";
 import { Text, Button, View, Pressable, PressableProps } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { version } from "@/package.json";
 
-const themeOptions = [
+const themeOptions: [string, string][] = [
 	["Системска", ""],
 	["Светла", "light"],
 	["Темна", "dark"],
 ];
-const continuousLocationOptions = [
+const continuousLocationOptions: [string, number][] = [
 	["1 секунда", 1],
 	["5 секунди", 5],
 	["10 секунди", 10],
@@ -23,7 +24,7 @@ const continuousLocationOptions = [
 	["Исклучено", 0],
 ];
 
-function Setting(args: PressableProps & { name: string, desc?: string, children: React.ReactNode }) {
+function Setting(args: PressableProps & { name: string, desc?: string, children?: React.ReactNode }) {
 	const styles = useStyles();
 	return <Pressable {...args} android_ripple={{ foreground: true }}>
 		<View style={styles.setting}>
@@ -36,6 +37,17 @@ function Setting(args: PressableProps & { name: string, desc?: string, children:
 	</Pressable>;
 }
 
+function SettingDropdown<T>(attr: {
+	data: [string, T][],
+	value: T,
+	onChange: (i: [string, T]) => void,
+	renderLeftIcon?: () => React.ReactElement
+}) {
+	const styles = useStyles();
+	return <Dropdown {...attr} labelField={0} valueField={1} style={styles.dropdown} selectedTextStyle={styles.dropdownText}
+		containerStyle={styles.dropdownContainer} itemTextStyle={styles.dropdownText} />
+}
+
 export default function Settings() {
 	const styles = useStyles(), colors = useColors(), userdata = useUserData();
 	let themeType = useThemeType(),
@@ -45,15 +57,10 @@ export default function Settings() {
 	return <SafeAreaView style={styles.view}>
 		<Text style={styles.heading}>Подесувања</Text>
 		<Setting name="Тема">
-			<Dropdown data={themeOptions} labelField={0} valueField={1}
-				value={themeType.themeSetting ?? ""} onChange={i => themeType.updateTheme(i[1] || null)}
-				style={styles.dropdown}
-				selectedTextStyle={styles.dropdownText}
-				containerStyle={styles.dropdownContainer}
-				itemTextStyle={styles.dropdownText}
-				renderLeftIcon={() => <FontAwesome size={20} color={colors.text} name="paint-brush" style={{
-					paddingRight: 10
-				}} />} />
+			<SettingDropdown data={themeOptions} value={themeType.themeSetting ?? ""}
+				onChange={i => themeType.updateTheme(i[1] || null)}
+				renderLeftIcon={() => <FontAwesome size={20} color={colors.text}
+					name="paint-brush" style={{ paddingRight: 10 }} />} />
 		</Setting>
 		<Setting name="Датабаза на автобуски станици, линии и рути" desc={fetchingLog || "Последно освежено: " + new Date(lastFetch).toLocaleString("mk")}>
 			<Button title="Освежи" color={fetching ? colors.muted : colors.accent} disabled={fetching} onPress={() => {
@@ -65,11 +72,11 @@ export default function Settings() {
 			}} />
 		</Setting>
 		<Setting name="Автоматско освежување на локација" desc="Во табот „Станици“">
-			<Dropdown data={continuousLocationOptions} labelField={0} valueField={1}
-				value={userdata.continuousLocation} onChange={i => {
-					userdata.continuousLocation = i[1];
-					setUserData();
-				}} />
+			<SettingDropdown data={continuousLocationOptions} value={userdata.continuousLocation} onChange={i => {
+				userdata.continuousLocation = i[1];
+				setUserData();
+			}} />
 		</Setting>
+		<Setting name="Верзија"><Text style={styles.text}>{version}</Text></Setting>
 	</SafeAreaView>;
 }

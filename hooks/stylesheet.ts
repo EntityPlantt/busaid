@@ -79,6 +79,7 @@ export function useStyles() {
 			borderRadius: 5,
 			marginHorizontal: 10,
 			padding: 15,
+			width: 150,
 		},
 		dropdownText: {
 			color: c.text,
@@ -175,7 +176,6 @@ export function useStyles() {
 			flexShrink: 1,
 		},
 		settingOpt: {
-			flexGrow: 1,
 			minWidth: 75,
 		},
 	});
