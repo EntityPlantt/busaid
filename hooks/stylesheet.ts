@@ -2,18 +2,19 @@ import useTheme from "@/hooks/useTheme";
 import { StyleSheet } from "react-native";
 
 export function useColors() {
-	let theme = useTheme();
+	const t = useTheme();
 	return {
-		text: theme.colors.text,
-		accent: theme.colors.primary,
+		text: t.colors.text,
+		accent: t.colors.primary,
 		muted: "#808080",
-		border: theme.colors.border,
+		border: t.colors.border,
 		blue: "#0040ff",
+		card: t.colors.card,
 	};
-};
+}
+
 export function useStyles() {
-	let c = useColors();
-	let theme = useTheme();
+	const c = useColors();
 	return StyleSheet.create({
 		view: {
 			paddingTop: 20,
@@ -83,7 +84,7 @@ export function useStyles() {
 			color: c.text,
 		},
 		dropdownContainer: {
-			backgroundColor: theme.colors.card,
+			backgroundColor: c.card,
 		},
 		speedKey: {
 			fontSize: 50,
@@ -158,20 +159,24 @@ export function useStyles() {
 			fontSize: 12,
 		},
 		setting: {
-			borderBottomColor: c.muted,
+			borderBottomColor: c.border,
 			borderBottomWidth: 2,
 			display: "flex",
 			flexDirection: "row",
 			alignItems: "center",
 			justifyContent: "space-between",
-			gap: 50,
-			padding: 10
+			gap: 25,
+			padding: 10,
 		},
 		settingName: {
 			display: "flex",
 			flexDirection: "column",
 			wordWrap: "break-word",
 			flexShrink: 1,
+		},
+		settingOpt: {
+			flexGrow: 1,
+			minWidth: 75,
 		},
 	});
 }

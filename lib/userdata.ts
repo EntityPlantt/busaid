@@ -12,7 +12,7 @@ const initUserData = {
 	recentLines: [] as number[],
 	recentRoutes: [] as number[],
 	theme: null as string | null,
-	continuousLocation: false,
+	continuousLocation: 10,
 };
 
 let globalSetUD = (): void => { throw new Error("Can't use hook rn"); };

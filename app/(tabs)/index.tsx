@@ -8,23 +8,21 @@ import BusStop from "@/components/BusStop";
 import BusRoute from "@/components/BusRoute";
 import BusLine from "@/components/BusLine";
 import { LinearGradient } from "expo-linear-gradient";
+import useTheme from "@/hooks/useTheme";
 
 export default function Index() {
-	let loaded = useLoaded();
-	const styles = useStyles();
-	const colors = useColors();
-	const userdata = useUserData();
+	const loaded = useLoaded(), styles = useStyles(), colors = useColors(), userdata = useUserData(), theme = useTheme();
 	return <ScrollView>
 		<LinearGradient colors={[colors.accent, colors.blue]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-			<Text style={[styles.heading, { paddingBottom: 20, paddingTop: 30, fontSize: 50 }]}>BusAid</Text>
-			<LinearGradient colors={["#0000", "#121212"]} style={{ height: 10 }} />
+			<Text style={[styles.heading, { paddingBottom: 20, paddingTop: 50, fontSize: 50, color: "white" }]}>BusAid</Text>
+			<LinearGradient colors={["#0000", theme.colors.background]} style={{ height: 10 }} />
 		</LinearGradient>
 		<Text style={[styles.text, styles.stopbtn, { textAlign: "left" }]}>Неодамнешни постојки</Text>
-		<FlatList style={styles.recentList} horizontal data={userdata.recentStops} renderItem={({ item }) => <BusStop id={item} vert />} />
+		<FlatList style={styles.recentList} horizontal data={loaded ? userdata.recentStops : []} renderItem={({ item }) => <BusStop id={item} vert />} />
 		<Text style={[styles.text, styles.stopbtn, { textAlign: "left" }]}>Неодамнешни рути</Text>
-		<FlatList style={styles.recentList} horizontal data={userdata.recentRoutes} renderItem={({ item }) => <BusRoute id={item} vert />} />
+		<FlatList style={styles.recentList} horizontal data={loaded ? userdata.recentRoutes : []} renderItem={({ item }) => <BusRoute id={item} vert />} />
 		<Text style={[styles.text, styles.stopbtn, { textAlign: "left" }]}>Неодамнешни линии</Text>
-		<FlatList style={styles.recentList} horizontal data={userdata.recentLines} renderItem={({ item }) => <BusLine id={item} vert />} />
+		<FlatList style={styles.recentList} horizontal data={loaded ? userdata.recentLines : []} renderItem={({ item }) => <BusLine id={item} vert />} />
 		<Text style={[styles.heading, { marginTop: 20 }]}>Планер</Text>
 		<TouchableOpacity style={styles.stopbtn} onPress={() => router.push("/stops")}>
 			<Text style={styles.text}>Дестинации</Text>

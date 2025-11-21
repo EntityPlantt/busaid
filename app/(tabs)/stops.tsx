@@ -8,64 +8,32 @@ import { Searchbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { CurvedTransition } from "react-native-reanimated";
 import useLocation from "@/hooks/useLocation";
-import ButtonPanel from "@/components/ButtonPanel";
-import { TouchableOpacity } from "react-native";
-import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
-import { useUserData } from "@/lib/userdata";
 
 // https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
-function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: number, lon2: number) {
-	var R = 6371; // Radius of the earth in km
-	var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-	var dLon = deg2rad(lon2 - lon1);
-	var a =
-		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-		Math.sin(dLon / 2) * Math.sin(dLon / 2)
-		;
-	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	var d = R * c; // Distance in km
-	return d;
-}
-
-function deg2rad(deg: number) {
-	return deg * (Math.PI / 180);
+const DEG2RAD = Math.PI / 180;
+function distance(lat: number, lon: number, lat2: number, lon2: number) {
+	const a = Math.sin(DEG2RAD * (lat2 - lat) / 2) ** 2 + Math.cos(DEG2RAD * lat) * Math.cos(DEG2RAD * lat2) * Math.sin(DEG2RAD * (lon2 - lon) / 2) ** 2;
+	return 12742 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 export default function Stops() {
-	const loaded = useLoaded();
-	const colors = useColors(), style = useStyles(), userdata = useUserData();
+	const loaded = useLoaded(), style = useStyles();
 	const [query, setQuery] = useState("");
-	const [pos, fetchLocation, toggleContinousFetching] = useLocation();
-	function distanceTo(lat: number, lon: number): number {
-		// @ts-expect-error
-		return getDistanceFromLatLonInKm(lat, lon, pos.lat, pos.lon);
-	}
+	const [pos, fetchLocation] = useLocation();
 	return <SafeAreaView style={style.view}>
-		<ButtonPanel>
-			<Searchbar placeholder="Пребарај..." value={query} onChangeText={setQuery} theme={useTheme()} style={{
-				paddingHorizontal: 10,
-				marginHorizontal: 10,
-				marginBottom: 20,
-				width: 200,
-				position: "relative",
-				top: 5,
-			}} />
-			{null}
-			<TouchableOpacity style={style.button} onPress={toggleContinousFetching}>
-				<FontAwesome6 style={style.topBtnIcon} name="magnifying-glass-location" size={28} color={userdata.continuousLocation ? colors.accent : colors.text} />
-			</TouchableOpacity>
-			<TouchableOpacity style={style.button} onPress={fetchLocation}>
-				<AntDesign style={style.topBtnIcon} name="reload" size={28} color={colors.text} />
-			</TouchableOpacity>
-		</ButtonPanel>
+		<Searchbar placeholder="Пребарај..." value={query} onChangeText={setQuery} theme={useTheme()} style={{
+			paddingHorizontal: 10,
+			marginHorizontal: 10,
+			marginBottom: 20,
+		}} />
 		<Animated.FlatList
 			data={Object.values(loaded ? db.data.stops : [])
 				.filter(x => (x.number + " " + x.name.toLowerCase()).includes(query.toLowerCase()))
-				.sort(pos ? (a, b) => distanceTo(a.lat, a.lon) - distanceTo(b.lat, b.lon) : (a, b) => a.id - b.id)
+				.sort(pos ? (a, b) => distance(a.lat, a.lon, pos.lat, pos.lon) - distance(b.lat, b.lon, pos.lat, pos.lon) : (a, b) => a.id - b.id)
 				.slice(0, 50)}
 			renderItem={({ item }) => <BusStop id={item.id} />}
 			keyExtractor={item => item.id.toString()}
-			itemLayoutAnimation={CurvedTransition.duration(500)} />
+			itemLayoutAnimation={CurvedTransition.duration(500)}
+			onRefresh={fetchLocation} refreshing={false} />
 	</SafeAreaView>;
 }

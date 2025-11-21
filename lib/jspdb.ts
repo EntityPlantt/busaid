@@ -60,15 +60,16 @@ namespace db {
 			Origin: "http://info.skopska.mk",
 			Host: "info.skopska.mk:8080",
 			Connection: "keep-alive",
-			"User-Agent": "Mozilla/5.0 (BusAid; Android x86_64; rv:1.0) BusAid/1.0; io.github.entityplantt.busaid"
-		}
+			"User-Agent": "Mozilla/5.0 (BusAid; Android x86_64; rv:1.0) BusAid/1.0; io.github.entityplantt.busaid",
+		},
 	});
 	export const data = {
 		timestamp: Date.now(),
 		token: "",
 		stops: {} as { [id: string]: Stop },
 		routes: {} as { [id: string]: Route },
-		lines: {} as { [id: string]: Line }
+		lines: {} as { [id: string]: Line },
+		loaded: false,
 	};
 	export const routeSets: { [id: string]: Route } = {};
 
@@ -96,6 +97,7 @@ namespace db {
 		});
 		dataFetchLogSetter("Преземени линии");
 		data.timestamp = Date.now();
+		data.loaded = true;
 		if (!cachefile.exists) cachefile.create();
 		cachefile.write(JSON.stringify(data), { encoding: "utf8" });
 		dataFetchLogSetter("");
@@ -105,6 +107,7 @@ namespace db {
 			let newdata = JSON.parse(cachefile.textSync());
 			if (newdata.timestamp + MAX_AGE > Date.now()) {
 				Object.assign(data, newdata);
+				data.loaded = true;
 				Object.values(data.routes).forEach(x => x.stopIdSet = new Set(x.stopIds));
 				return;
 			}
