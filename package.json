@@ -1,7 +1,7 @@
 {
   "name": "busaid",
   "main": "expo-router/entry",
-  "version": "0.2.1",
+  "version": "0.2.2-pre1",
   "scripts": {
     "start": "expo start",
 	"build": "eas build -e preview --profile android",

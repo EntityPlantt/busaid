@@ -38,7 +38,8 @@ export default function Stops() {
 	const [query, setQuery] = useState("");
 	const [pos, fetchLocation, toggleContinousFetching] = useLocation();
 	function distanceTo(lat: number, lon: number): number {
-		return pos.lat && pos.lon ? getDistanceFromLatLonInKm(lat, lon, pos.lat, pos.lon) : 0;
+		// @ts-expect-error
+		return getDistanceFromLatLonInKm(lat, lon, pos.lat, pos.lon);
 	}
 	return <SafeAreaView style={style.view}>
 		<ButtonPanel>
@@ -61,7 +62,7 @@ export default function Stops() {
 		<Animated.FlatList
 			data={Object.values(loaded ? db.data.stops : [])
 				.filter(x => (x.number + " " + x.name.toLowerCase()).includes(query.toLowerCase()))
-				.sort(pos.lat !== undefined ? (a, b) => distanceTo(a.lat, a.lon) - distanceTo(b.lat, b.lon) : (a, b) => a.id - b.id)
+				.sort(pos ? (a, b) => distanceTo(a.lat, a.lon) - distanceTo(b.lat, b.lon) : (a, b) => a.id - b.id)
 				.slice(0, 50)}
 			renderItem={({ item }) => <BusStop id={item.id} />}
 			keyExtractor={item => item.id.toString()}
