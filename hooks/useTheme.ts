@@ -1,7 +1,7 @@
 import { Theme, DarkTheme as dt, DefaultTheme as lt } from "expo-router/react-navigation";
 import useThemeType from "./useThemeType";
 
-export const DarkTheme: Theme = {
+export const DarkTheme = {
 	dark: true,
 	fonts: dt.fonts,
 	colors: {
@@ -12,7 +12,7 @@ export const DarkTheme: Theme = {
 		card: "#242424",
 		notification: "#00c418"
 	}
-}, DefaultTheme: Theme = {
+}, DefaultTheme = {
 	dark: false,
 	fonts: lt.fonts,
 	colors: {
