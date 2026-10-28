@@ -69,6 +69,7 @@ export default {
 					isAndroidForegroundServiceEnabled: true,
 				},
 			],
+			"expo-status-bar",
 		],
 		experiments: {
 			typedRoutes: true,

@@ -1,21 +1,18 @@
 import useTheme from "@/hooks/useTheme";
-import { ThemeProvider } from "@react-navigation/native";
+import { ThemeProvider } from "expo-router/react-navigation";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SingletonHooksContainer } from "react-singleton-hook";
-import * as NavigationBar from "expo-navigation-bar";
-import { useEffect } from "react";
+import { NavigationBar } from "expo-navigation-bar";
 
 export default function RootLayout() {
 	const theme = useTheme();
-	useEffect(() => {
-		NavigationBar.setButtonStyleAsync(theme.dark ? "light" : "dark");
-	}, [theme]);
 	return <ThemeProvider value={theme}>
+		<NavigationBar style={theme.dark ? "light" : "dark"} />
 		<SingletonHooksContainer />
 		<Stack screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="(tabs)" />
 		</Stack>
-		<StatusBar style={theme.dark ? "light" : "dark"} backgroundColor={theme.colors.background} />
+		<StatusBar style={theme.dark ? "light" : "dark"} />
 	</ThemeProvider>;
 }

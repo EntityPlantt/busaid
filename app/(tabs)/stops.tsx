@@ -1,5 +1,5 @@
 import BusStop from "@/components/BusStop";
-import { useColors, useStyles } from "@/hooks/stylesheet";
+import { useStyles } from "@/hooks/stylesheet";
 import useLoaded from "@/hooks/useLoaded";
 import useTheme from "@/hooks/useTheme";
 import db from "@/lib/jspdb";
