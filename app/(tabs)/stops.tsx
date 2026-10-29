@@ -4,10 +4,11 @@ import useLoaded from "@/hooks/useLoaded";
 import useTheme from "@/hooks/useTheme";
 import db from "@/lib/jspdb";
 import { useState } from "react";
-import { Searchbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { CurvedTransition } from "react-native-reanimated";
 import useLocation from "@/hooks/useLocation";
+import { TextInput, View } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 // https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
 const DEG2RAD = Math.PI / 180;
@@ -17,15 +18,34 @@ function distance(lat: number, lon: number, lat2: number, lon2: number) {
 }
 
 export default function Stops() {
-	const loaded = useLoaded(), style = useStyles();
+	const loaded = useLoaded(), style = useStyles(), theme = useTheme();
 	const [query, setQuery] = useState("");
 	const [pos, fetchLocation] = useLocation();
 	return <SafeAreaView style={style.view}>
-		<Searchbar placeholder="Пребарај..." value={query} onChangeText={setQuery} theme={useTheme()} style={{
-			paddingHorizontal: 10,
+		<View style={{
+			paddingVertical: 10,
+			paddingHorizontal: 20,
 			marginHorizontal: 10,
 			marginBottom: 20,
-		}} />
+			backgroundColor: theme.colors.card,
+			borderRadius: 50,
+			flex: 1,
+			flexDirection: "row",
+			alignItems: "center",
+			minHeight: 70,
+		}}>
+			<AntDesign name="search" color={theme.colors.text} size={25} />
+			<TextInput placeholder="Пребарај..." placeholderTextColor={theme.colors.text} cursorColor={theme.colors.primary} style={{
+				color: theme.colors.text,
+				fontSize: 20,
+				lineHeight: 40,
+				marginHorizontal: 15,
+				flexGrow: 1,
+				// borderStyle: "dashed",
+				// borderColor: theme.colors.primary,
+				// borderWidth: 1,
+			}} onChangeText={setQuery} />
+		</View>
 		<Animated.FlatList
 			data={Object.values(loaded ? db.data.stops : [])
 				.filter(x => (x.number + " " + x.name.toLowerCase()).includes(query.toLowerCase()))

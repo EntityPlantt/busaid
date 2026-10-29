@@ -18,7 +18,7 @@ export function useStyles() {
 	return StyleSheet.create({
 		view: {
 			paddingTop: 20,
-			paddingBottom: 60,
+			paddingBottom: 100,
 		},
 		text: {
 			color: c.text,
@@ -45,9 +45,8 @@ export function useStyles() {
 		},
 		itemNo: {
 			padding: 10,
-			height: 40,
 			flexShrink: 0,
-			width: 60,
+			width: 70,
 			borderRightColor: c.muted,
 			borderRightWidth: 1,
 		},

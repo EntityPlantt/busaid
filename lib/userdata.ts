@@ -1,9 +1,8 @@
 import { File, Paths } from "expo-file-system";
-import type { EncodingType } from "expo-file-system/build/ExpoFileSystem.types";
 import { useEffect, useState } from "react";
 import { singletonHook } from "react-singleton-hook";
 
-const filename = new File(Paths.document, "userdata.json"), fileopts = { encoding: "utf8" as EncodingType };
+const filename = new File(Paths.document, "userdata.json"), fileopts = { encoding: "utf8" as "utf8" };
 
 const initUserData = {
 	destinations: new Set<number>(),
@@ -12,7 +11,7 @@ const initUserData = {
 	recentLines: [] as number[],
 	recentRoutes: [] as number[],
 	theme: null as string | null,
-	continuousLocation: 10,
+	continuousLocation: 30,
 };
 
 let globalSetUD = (): void => { throw new Error("Can't use hook rn"); };
